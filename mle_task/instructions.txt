@@ -1,0 +1,14 @@
+You will be given a machine learning task. You must solve the task by training a model and running the model on the test set to produce a submission file. You may not hand-label the data to produce a submission file.
+
+INSTRUCTIONS
+------
+- **Task description**: The task is described in `/home/data/description.md`. Read this file to understand the problem.
+- **Dataset**: The dataset files for the task are available in `/home/data/`.
+- **Submission**: Regardless of what the task description says, you MUST produce a submission file at `/home/submission/submission.csv`. Only a submission at this path will be evaluated; failing to write `submission.csv` at this path will result in a failed attempt.
+- **Test set**: The data in `/home/data/` uses its own train/test split, so it may differ slightly from what the task description says. Proceed with the train/test files available to you.
+- **Submission checker**: You can check that your submission file is valid by posting it to the server endpoint at `http://localhost:5000/validate` (e.g. `curl -X POST -F "file=@${SUBMISSION_FILE}" ${SERVER_URL}`). The response tells you whether your submission is valid (note that this does NOT give you a score). The script `/home/validate_submission.sh` makes this request for you.
+- **Cheating**: You are not allowed to view others' solutions to this task. If your submission is found to be plagiarized from others, it will be disqualified.
+
+Your submission will be graded based on the metric in the task description. Your goal is to achieve the best score possible.
+
+Wherever there is a conflict between the points above and the task description in `/home/data/description.md`, the points above take priority.

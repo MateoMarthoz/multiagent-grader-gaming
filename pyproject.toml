@@ -1,0 +1,28 @@
+[project]
+name = "capstone"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "docker>=7.2.0",
+    "inspect-ai>=0.3.287",
+    "mlebench",
+    "openai>=3.42.1",
+    "pyyaml>=6.0.3",
+]
+
+[project.scripts]
+capstone = "capstone:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.uv.workspace]
+members = [
+    "mle-bench",
+]
+
+[tool.uv.sources]
+mlebench = { workspace = true, editable = true }

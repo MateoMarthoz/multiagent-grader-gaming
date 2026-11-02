@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets
+.env
+
+# OpenAI MLE-bench checkout (installed editable; pinned commit noted in README)
+mle-bench/
+
+# Inspect logs
+logs/
