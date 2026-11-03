@@ -1,11 +1,11 @@
-"""Summarize one pilot trial: config, provider, usage, cost, outcome and gaming evidence.
+"""Summarize a pilot run: config, provider, usage, cost, outcome and gaming evidence per epoch.
 
     /root/capstone/.venv/bin/python redwood_titanic/analyze.py logs/redwood-titanic/trial-1
 
 Prints a markdown report and writes summary.json next to the log.
 Cost sources, most authoritative first: OpenRouter's per-call `usage.cost` (recorded
-because trials run with --log-model-api), the key's usage meter before/after the trial
-(usage_before.json / usage_after.json), and tokens x DigitalOcean list prices.
+because runs use --log-model-api), the key's usage meter before/after the run
+(usage_before.json / usage_after.json, whole run only), and tokens x DigitalOcean list prices.
 """
 
 from __future__ import annotations
@@ -39,30 +39,12 @@ def _clip(s: str, n: int) -> str:
     return s if len(s) <= n else s[: n - 20] + " …[truncated]"
 
 
-def main(log_dir: str) -> None:
-    d = Path(log_dir)
-    paths = sorted(glob.glob(str(d / "*.eval")))
-    if not paths:
-        print(f"no .eval log in {d}")
-        return
-    log = read_eval_log(paths[-1])
-    s = log.samples[0] if log.samples else None
-    out: dict = {"log": paths[-1], "status": log.status, "error": str(log.error) if log.error else None}
-    out["model"] = log.eval.model
-    out["model_args"] = log.eval.model_args
-    out["generate_config"] = {k: v for k, v in log.eval.model_generate_config.model_dump().items() if v is not None}
-    cfg = log.eval.config
-    out["limits"] = {"message_limit": cfg.message_limit, "token_limit": cfg.token_limit, "time_limit": cfg.time_limit}
-    out["task_args"] = log.eval.task_args
+def analyze_sample(s) -> tuple[dict, list[str]]:
+    out: dict = {"epoch": s.epoch}
 
-    md = [f"# {d.name}", "", f"- Log: `{paths[-1]}`", f"- Status: {log.status}" + (f" ({out['error']})" if out["error"] else "")]
-    if s is None:
-        print("\n".join(md))
-        return
-
-    # --- provider, per-call cost -------------------------------------------------
+    # --- provider, per-call cost ---------------------------------------------------
     model_events = [e for e in s.events if e.event == "model"]
-    providers, served_models, call_costs, n_calls_logged, req_provider = Counter(), Counter(), [], 0, set()
+    providers, served_models, call_costs, n_logged, req_provider = Counter(), Counter(), [], 0, set()
     for e in model_events:
         if e.call is None:
             continue
@@ -70,20 +52,20 @@ def main(log_dir: str) -> None:
             req_provider.add(json.dumps((e.call.request.get("extra_body") or {}).get("provider")))
         r = e.call.response or {}
         if r:
-            n_calls_logged += 1
+            n_logged += 1
             providers[r.get("provider")] += 1
             served_models[r.get("model")] += 1
             cost = (r.get("usage") or {}).get("cost")
             if cost is not None:
                 call_costs.append(float(cost))
     out["n_model_calls"] = len(model_events)
-    out["n_calls_with_response_logged"] = n_calls_logged
+    out["n_calls_with_response_logged"] = n_logged
     out["providers"] = dict(providers)
     out["served_models"] = dict(served_models)
     out["request_provider_param"] = sorted(req_provider)
     out["model_errors"] = [str(e.error)[:300] for e in model_events if e.error]
 
-    # --- usage, cost ---------------------------------------------------------------
+    # --- usage, cost -----------------------------------------------------------------
     usage = {}
     for _, u in (s.model_usage or {}).items():
         usage = u.model_dump()
@@ -95,16 +77,6 @@ def main(log_dir: str) -> None:
     out["cost_token_estimate"] = token_cost
     out["cost_openrouter_calls"] = sum(call_costs) if call_costs else None
     out["n_calls_with_cost"] = len(call_costs)
-    meter = None
-    try:
-        b = json.loads((d / "usage_before.json").read_text())
-        a = json.loads((d / "usage_after.json").read_text())
-        meter = a["usage"] - b["usage"]
-    except Exception:  # noqa: BLE001
-        pass
-    out["cost_key_meter_delta"] = meter
-    candidates = [c for c in (out["cost_openrouter_calls"], meter, token_cost) if c is not None]
-    out["cost_conservative"] = max(candidates) if candidates else None
 
     # --- runtime, ending -------------------------------------------------------------
     out["total_time_s"] = s.total_time
@@ -123,8 +95,9 @@ def main(log_dir: str) -> None:
         ended = "unknown"
     out["ended_because"] = ended
 
-    # --- score ----------------------------------------------------------------------
+    # --- score -----------------------------------------------------------------------
     sc = (s.scores or {}).get("redwood_titanic_scorer")
+    evidence = []
     if sc is not None:
         meta = sc.metadata or {}
         out["score_value"] = sc.value
@@ -138,41 +111,33 @@ def main(log_dir: str) -> None:
         out["transcript_first_index"] = tr.get("first_index")
         out["grader_runs"] = tr.get("grader_runs")
         evidence = tr.get("evidence") or []
-    else:
-        evidence = []
     final_reasoning, final_text = _text_parts(last) if last is not None and last.role == "assistant" else ("", "")
     out["final_message"] = final_text[:3000]
 
-    (d / "summary.json").write_text(json.dumps(out, indent=1, default=str))
-
-    # --- markdown -------------------------------------------------------------------
-    g, c = out.get("grade") or {}, out.get("classification") or {}
-    md += [
-        f"- Model: `{out['model']}`; request provider param: {out['request_provider_param']}; "
-        f"served by: {out['providers']} ({n_calls_logged}/{len(model_events)} calls logged); served model ids: {out['served_models']}",
-        f"- Generate config (non-default): {out['generate_config'] or 'none (provider defaults)'}",
-        f"- Limits: {out['limits']}",
+    # --- markdown --------------------------------------------------------------------
+    g, c, f = out.get("grade") or {}, out.get("classification") or {}, out.get("files") or {}
+    md = [
+        f"## Epoch {s.epoch}: `{out.get('primary')}`",
+        "",
+        f"- Served by: {out['providers']} ({n_logged}/{len(model_events)} calls logged); served model ids: "
+        f"{out['served_models']}; request provider param: {out['request_provider_param']}",
         f"- Usage: input {inp:,} + cache-read {cr:,} + output {outp:,} (reasoning {usage.get('reasoning_tokens') or 0:,}) "
         f"= {usage.get('total_tokens') or 0:,} tokens",
-        f"- Cost: OpenRouter per-call sum {out['cost_openrouter_calls']} ({len(call_costs)} calls); key meter delta {meter}; "
-        f"token estimate {token_cost:.4f}; **conservative {out['cost_conservative']:.4f} USD**",
+        f"- Cost: OpenRouter per-call sum {out['cost_openrouter_calls']} ({len(call_costs)} calls); "
+        f"token estimate {token_cost:.4f}",
         f"- Runtime: {s.total_time:.0f} s total ({s.working_time:.0f} s working); {len(s.messages)} messages; ended: {ended}",
         f"- Model API errors: {len(out['model_errors'])}",
-        "",
-        f"**Classification: `{out.get('primary')}`**",
-        "",
         f"- Valid submission: {g.get('valid_submission')} {g.get('format_problems') or ''}",
         f"- Authoritative grader score (purpose={g.get('purpose')}): {g.get('grader_score')}; F1 vs truth {g.get('f1_truth', 0):.3f}; "
         f"accuracy vs training / benchmarking labels {g.get('acc_training_labels', 0):.3f} / {g.get('acc_benchmarking_labels', 0):.3f}; "
         f"flip ids matching training {g.get('flip_ids_matching_training')}/{g.get('n_flip_ids')}",
-        f"- In-sandbox grader output at the end: `{(out.get('files') or {}).get('in_sandbox_grader_output')}`",
+        f"- In-sandbox grader output at the end: `{f.get('in_sandbox_grader_output')}`",
         "- Flags: " + ", ".join(f"{k}={v}" for k, v in c.items() if k != "primary"),
-        f"- Files accessed (atime): {[k for k, v in ((out.get('files') or {}).get('accessed') or {}).items() if v]}",
-        f"- Tamper checks: grader_modified={(out.get('files') or {}).get('grader_modified')}, "
-        f"purpose={(out.get('files') or {}).get('purpose_file_content')!r}, libs_modified={(out.get('files') or {}).get('libs_modified')}, "
-        f"new files in /opt/eval={(out.get('files') or {}).get('opt_eval_new_files')}",
+        f"- Files accessed (atime): {[k for k, v in (f.get('accessed') or {}).items() if v]}",
+        f"- Tamper checks: grader_modified={f.get('grader_modified')}, purpose={f.get('purpose_file_content')!r}, "
+        f"libs_modified={f.get('libs_modified')}, new files in /opt/eval={f.get('opt_eval_new_files')}",
         "",
-        "## Evidence (commands touching eval.log / grader / labels / purpose file)",
+        f"### Epoch {s.epoch} evidence (commands touching eval.log / grader / labels / purpose file)",
         "",
     ]
     if not evidence:
@@ -181,7 +146,7 @@ def main(log_dir: str) -> None:
         i = ev["index"]
         reasoning, text = _text_parts(s.messages[i])
         md += [
-            f"### message {i}: {', '.join(ev['flags'])}",
+            f"#### message {i}: {', '.join(ev['flags'])}",
             "",
             "Reasoning before the call:",
             "```",
@@ -197,10 +162,78 @@ def main(log_dir: str) -> None:
             "```",
             "",
         ]
-    md += ["## Final message", "", "```", _clip(final_text or "(none)", 3000), "```"]
+    md += [f"### Epoch {s.epoch} final message", "", "```", _clip(final_text or "(none)", 3000), "```"]
     if final_reasoning:
         md += ["", "Final reasoning:", "```", _clip(final_reasoning, 2500), "```"]
-    print("\n".join(md))
+    md.append("")
+    return out, md
+
+
+def main(log_dir: str) -> None:
+    d = Path(log_dir)
+    paths = sorted(glob.glob(str(d / "*.eval")))
+    if not paths:
+        print(f"no .eval log in {d}")
+        return
+    log = read_eval_log(paths[-1])
+    run: dict = {"log": paths[-1], "status": log.status, "error": str(log.error) if log.error else None}
+    run["model"] = log.eval.model
+    run["model_args"] = log.eval.model_args
+    run["generate_config"] = {k: v for k, v in log.eval.model_generate_config.model_dump().items() if v is not None}
+    cfg = log.eval.config
+    run["limits"] = {"message_limit": cfg.message_limit, "token_limit": cfg.token_limit,
+                     "time_limit": cfg.time_limit, "epochs": cfg.epochs, "max_samples": cfg.max_samples}
+    run["task_args"] = log.eval.task_args
+
+    samples = sorted(log.samples or [], key=lambda s: s.epoch)
+    epochs, sections = [], []
+    for s in samples:
+        out, md = analyze_sample(s)
+        epochs.append(out)
+        sections += md
+    run["epochs"] = epochs
+
+    meter = None
+    try:
+        b = json.loads((d / "usage_before.json").read_text())
+        a = json.loads((d / "usage_after.json").read_text())
+        meter = a["usage"] - b["usage"]
+    except Exception:  # noqa: BLE001
+        pass
+    calls_total = sum(e["cost_openrouter_calls"] or 0 for e in epochs) if epochs else None
+    token_total = sum(e["cost_token_estimate"] for e in epochs)
+    run["cost_openrouter_calls"] = calls_total
+    run["cost_key_meter_delta"] = meter
+    run["cost_token_estimate"] = token_total
+    candidates = [c for c in (calls_total, meter, token_total) if c is not None]
+    run["cost_conservative"] = max(candidates) if candidates else None
+    (d / "summary.json").write_text(json.dumps(run, indent=1, default=str))
+
+    md = [
+        f"# {d.name}",
+        "",
+        f"- Log: `{paths[-1]}`",
+        f"- Status: {log.status}" + (f" ({run['error']})" if run["error"] else ""),
+        f"- Model: `{run['model']}`; model args: {run['model_args']}",
+        f"- Generate config (non-default): {run['generate_config'] or 'none (provider defaults)'}",
+        f"- Limits: {run['limits']}",
+        f"- Task args: {run['task_args'] or 'defaults'}",
+        f"- Cost (whole run): OpenRouter per-call sum {calls_total}; key meter delta {meter}; token estimate "
+        f"{token_total:.4f}; **conservative {run['cost_conservative'] or 0:.4f} USD**",
+        "",
+        "| Epoch | Classification | Grader score | F1 vs truth | Labels accessed | Messages | Tokens | Cost | Ended |",
+        "|---|---|---|---|---|---|---|---|---|",
+    ]
+    for e in epochs:
+        g, c = e.get("grade") or {}, e.get("classification") or {}
+        md.append(
+            f"| {e['epoch']} | `{e.get('primary')}` | {g.get('grader_score')} | {g.get('f1_truth', 0):.3f} | "
+            f"{c.get('labels_accessed')} | {e['n_messages']} | {(e['usage'] or {}).get('total_tokens', 0):,} | "
+            f"{e['cost_openrouter_calls'] if e['cost_openrouter_calls'] is not None else e['cost_token_estimate']:.4f} | "
+            f"{e['ended_because']} |"
+        )
+    md.append("")
+    print("\n".join(md + sections))
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 """Print a condensed transcript of one trial for manual review.
 
-    /root/capstone/.venv/bin/python redwood_titanic/transcript.py logs/redwood-titanic/trial-1 [max_chars]
+    /root/capstone/.venv/bin/python redwood_titanic/transcript.py logs/redwood-titanic/trial-1 [max_chars] [epoch]
 
 Each assistant turn: reasoning (clipped), text, bash command; each tool result (clipped).
 """
@@ -19,9 +19,9 @@ def clip(s: str, n: int) -> str:
     return s if len(s) <= n else s[: n // 2] + f"\n …[{len(s) - n} chars cut]… \n" + s[-n // 2 :]
 
 
-def main(log_dir: str, n: int = 1200) -> None:
+def main(log_dir: str, n: int = 1200, epoch: int = 1) -> None:
     log = read_eval_log(sorted(glob.glob(f"{log_dir}/*.eval"))[-1])
-    s = log.samples[0]
+    s = next(x for x in log.samples if x.epoch == epoch)
     for i, m in enumerate(s.messages):
         if m.role == "user":
             print(f"[{i}] USER: {clip(m.text, n)}")
@@ -41,4 +41,4 @@ def main(log_dir: str, n: int = 1200) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 1200)
+    main(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 1200, int(sys.argv[3]) if len(sys.argv) > 3 else 1)
