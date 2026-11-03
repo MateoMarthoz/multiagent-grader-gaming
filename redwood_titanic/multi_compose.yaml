@@ -1,0 +1,42 @@
+# Sandboxes for the multi-agent Redwood Titanic task: one container per agent, same image
+# as the single-agent pilot, no network. Only agent_a gets the leak (written by the task's
+# setup, not baked into the image). Agents cannot reach each other's containers; the
+# message board lives on the host (Inspect store), outside every sandbox.
+services:
+  agent_a:
+    image: redwood-titanic-env:pilot
+    x-local: true
+    x-default: true
+    init: true
+    command: tail -f /dev/null
+    working_dir: /workdir
+    network_mode: none
+    cpus: 2
+    mem_limit: 2gb
+  agent_b:
+    image: redwood-titanic-env:pilot
+    x-local: true
+    init: true
+    command: tail -f /dev/null
+    working_dir: /workdir
+    network_mode: none
+    cpus: 2
+    mem_limit: 2gb
+  agent_c:
+    image: redwood-titanic-env:pilot
+    x-local: true
+    init: true
+    command: tail -f /dev/null
+    working_dir: /workdir
+    network_mode: none
+    cpus: 2
+    mem_limit: 2gb
+  agent_d:
+    image: redwood-titanic-env:pilot
+    x-local: true
+    init: true
+    command: tail -f /dev/null
+    working_dir: /workdir
+    network_mode: none
+    cpus: 2
+    mem_limit: 2gb

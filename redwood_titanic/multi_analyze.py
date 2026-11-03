@@ -1,0 +1,176 @@
+"""Report for one multi-agent run: per-agent provider, usage, cost, outcome, and the board.
+
+    /root/capstone/.venv/bin/python redwood_titanic/multi_analyze.py logs/redwood-titanic-multi/run-N
+
+Prints markdown and writes summary.json next to the log. Model calls are attributed to
+agents through the transcript spans named agent_a..agent_d. Cost sources, as in
+analyze.py: OpenRouter's per-call `usage.cost` (runs use --log-model-api), the key meter
+before/after (usage_before.json / usage_after.json), and tokens x DigitalOcean list prices.
+"""
+
+from __future__ import annotations
+
+import glob
+import json
+import sys
+from collections import Counter, defaultdict
+from pathlib import Path
+
+from inspect_ai.log import read_eval_log
+
+AGENTS = ["agent_a", "agent_b", "agent_c", "agent_d"]
+PRICE = {"input": 0.119e-6, "cache_read": 0.0238e-6, "output": 0.238e-6}  # DigitalOcean, checked 2026-11-03
+
+
+def _clip(s: str, n: int) -> str:
+    s = (s or "").strip()
+    return s if len(s) <= n else s[: n - 15] + " …[truncated]"
+
+
+def main(log_dir: str) -> None:
+    d = Path(log_dir)
+    paths = sorted(glob.glob(str(d / "*.eval")))
+    if not paths:
+        print(f"no .eval log in {d}")
+        return
+    log = read_eval_log(paths[-1])
+    md = [f"# {d.name}", "", f"- Log: `{paths[-1]}`", f"- Status: {log.status}"
+          + (f" ({log.error.message[:300]})" if log.error else "")]
+    out: dict = {"log": paths[-1], "status": log.status, "model": log.eval.model,
+                 "model_args": log.eval.model_args, "task_args": log.eval.task_args}
+    md += [f"- Model: {log.eval.model}; model args: `{json.dumps(log.eval.model_args)}`",
+           f"- Task args: `{json.dumps(log.eval.task_args)}`"]
+    if not log.samples:
+        print("\n".join(md))
+        return
+    s = log.samples[0]
+    md.append(f"- Sample: {s.id}; runtime {s.total_time or 0:.0f} s; sample limit: {s.limit.type if s.limit else 'none'}")
+
+    # --- per-agent model calls via spans ------------------------------------------------
+    spans = {}
+    for e in s.events:
+        if e.event == "span_begin":
+            spans[e.id] = (e.name, e.parent_id)
+
+    def agent_of(span_id):
+        seen = set()
+        while span_id and span_id not in seen:
+            seen.add(span_id)
+            name, parent = spans.get(span_id, (None, None))
+            if name in AGENTS:
+                return name
+            span_id = parent
+        return "unattributed"
+
+    acc = defaultdict(lambda: {"calls": 0, "providers": Counter(), "served": Counter(), "cost": 0.0,
+                               "n_cost": 0, "req_provider": set(), "errors": 0,
+                               "input": 0, "cache_read": 0, "output": 0, "reasoning": 0})
+    for e in s.events:
+        if e.event != "model":
+            continue
+        a = acc[agent_of(e.span_id)]
+        a["calls"] += 1
+        if e.error:
+            a["errors"] += 1
+        u = e.output.usage if e.output else None
+        if u:
+            a["input"] += u.input_tokens or 0
+            a["cache_read"] += u.input_tokens_cache_read or 0
+            a["output"] += u.output_tokens or 0
+            a["reasoning"] += u.reasoning_tokens or 0
+        if e.call is not None:
+            if e.call.request:
+                a["req_provider"].add(json.dumps((e.call.request.get("extra_body") or {}).get("provider")))
+            r = e.call.response or {}
+            if r:
+                a["providers"][r.get("provider")] += 1
+                a["served"][r.get("model")] += 1
+                c = (r.get("usage") or {}).get("cost")
+                if c is not None:
+                    a["cost"] += float(c)
+                    a["n_cost"] += 1
+
+    sc = next(iter(s.scores.values())) if s.scores else None
+    meta = sc.metadata if sc else {}
+    agents = meta.get("agents", {})
+    md += ["", "## Agents", "",
+           "| Agent | Ended | Msgs | Calls | Provider (served) | Tokens I + CR + O (R) | Cost (per-call) | Submission | Host score | F1 truth | Classification | Board: posts / reads / notified |",
+           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    total_cost = total_tok_cost = 0.0
+    out["agents"] = {}
+    for n in AGENTS + (["unattributed"] if "unattributed" in acc else []):
+        a = acc[n]
+        tok_cost = a["input"] * PRICE["input"] + a["cache_read"] * PRICE["cache_read"] + a["output"] * PRICE["output"]
+        total_cost += a["cost"]
+        total_tok_cost += tok_cost
+        info = agents.get(n, {})
+        g, cls, bb, st = info.get("grade", {}), info.get("classification", {}), info.get("board", {}), info.get("status", {})
+        label = cls.get("primary", "")
+        if "receiver" in info:
+            label = f"{info['receiver']['primary']} ({label})"
+        md.append(
+            f"| {n} | {st.get('end_reason', '')} | {st.get('n_messages', '')} | {a['calls']} | "
+            f"{dict(a['providers'])} | {a['input']:,} + {a['cache_read']:,} + {a['output']:,} ({a['reasoning']:,}) | "
+            f"${a['cost']:.5f} ({a['n_cost']}/{a['calls']} calls) | {'valid' if g.get('valid_submission') else ('invalid' if g.get('solution_exists') else 'none')} | "
+            f"{g.get('grader_score', 0):.3f} | {g.get('f1_truth', 0):.3f} | {label} | "
+            f"{bb.get('n_posts', 0)} / {bb.get('n_reads', 0)} / {bb.get('n_notifications', 0)} |")
+        out["agents"][n] = {
+            "calls": a["calls"], "providers": dict(a["providers"]), "served_models": dict(a["served"]),
+            "request_provider_param": sorted(a["req_provider"]), "model_errors": a["errors"],
+            "tokens": {k: a[k] for k in ("input", "cache_read", "output", "reasoning")},
+            "cost_per_call_sum": a["cost"], "cost_token_estimate": tok_cost,
+            "status": st, "classification": cls, "receiver": info.get("receiver"), "board": bb,
+            "grade": {k: g.get(k) for k in ("valid_submission", "grader_score", "f1_truth", "acc_benchmarking_labels",
+                                            "acc_training_labels", "flip_ids_matching_benchmarking",
+                                            "flip_ids_matching_training")},
+        }
+    md.append("")
+    req = sorted({p for n in out["agents"] for p in out["agents"][n]["request_provider_param"]})
+    md.append(f"- Provider param sent in requests: {req}")
+    md.append(f"- Episode metrics: `{json.dumps(sc.value if sc else {})}`")
+    md.append(f"- Score answer: {sc.answer if sc else None}")
+    md.append(f"- Rounds: {meta.get('rounds')}")
+
+    # --- cost --------------------------------------------------------------------------
+    meter = None
+    try:
+        before = json.loads((d / "usage_before.json").read_text())["usage"]
+        after = json.loads((d / "usage_after.json").read_text())["usage"]
+        meter = after - before
+    except Exception:  # noqa: BLE001
+        pass
+    conservative = max(total_cost, total_tok_cost, meter or 0.0)
+    out["cost"] = {"per_call_sum": total_cost, "token_estimate": total_tok_cost, "key_meter_delta": meter,
+                   "conservative": conservative}
+    md += ["", "## Cost", "",
+           f"- Per-call sum: ${total_cost:.5f}; token estimate: ${total_tok_cost:.5f}; key meter delta: "
+           + (f"${meter:.5f}" if meter is not None else "n/a") + f"; **conservative: ${conservative:.5f}**"]
+
+    # --- board -------------------------------------------------------------------------
+    posts = {p["id"]: p for p in meta.get("posts", [])}
+    md += ["", "## Message board", ""]
+    if not meta.get("board"):
+        md.append("(no posts)")
+    for p in meta.get("board", []):
+        a = posts.get(p["id"], {})
+        md.append(f"**#{p['id']} {p['author']} (round {p['round']}), share level {a.get('level')}"
+                  + (f", labels: {a.get('label_set')}" if a.get("label_set") else "") + "**")
+        md.append("")
+        md.append("```")
+        md.append(_clip(p["text"], 3000))
+        md.append("```")
+    md += ["", "Reads: " + ", ".join(f"{r['agent']}@r{r['round']} saw {r['post_ids']}" for r in meta.get("board_reads", [])),
+           "", "Notifications: " + ", ".join(f"{x['agent']}@r{x['round']} {x['post_ids']}" for x in meta.get("board_notifications", []))]
+    out["board"] = meta.get("board", [])
+    out["posts"] = meta.get("posts", [])
+    out["board_reads"] = meta.get("board_reads", [])
+    out["board_notifications"] = meta.get("board_notifications", [])
+    out["episode_metrics"] = sc.value if sc else None
+    out["answer"] = sc.answer if sc else None
+
+    (d / "summary.json").write_text(json.dumps(out, indent=2, default=str))
+    print("\n".join(md))
+
+
+if __name__ == "__main__":
+    main(sys.argv[1])
