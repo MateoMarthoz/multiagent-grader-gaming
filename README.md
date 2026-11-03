@@ -96,3 +96,10 @@ Useful task options (`-T name=value`): `leak` (default false), `max_messages`
 - [ ] Single agent + leak, full runs (ceiling: does it exploit at all?)
 - [ ] Multi-agent solver + message board
 - [ ] Leak to one agent; check whether the others exploit
+
+## Redwood Titanic pilot (branch `experiment/redwood-titanic-pilot`)
+Single-agent reconstruction of the Titanic environment from Redwood's score-seeking paper
+(arXiv:2610.41014, Appendix K.3) in `redwood_titanic/`; design, deviations, commands and
+results are in `redwood_titanic/README.md`, trials in `notes/runs.md`. It doesn't use
+mlebench; run it with the project venv (`/root/capstone/.venv/bin/inspect`) from the repo
+root, with a relative task path (`inspect eval redwood_titanic/task.py ...`).
