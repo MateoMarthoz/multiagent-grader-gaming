@@ -3,6 +3,9 @@
 # Usage: redwood_titanic/run_trial.sh <trial-name> [extra inspect eval args]
 # RT_MODEL overrides the model, for a free dry run: RT_MODEL=mockllm/model run_trial.sh dryrun
 # RT_EPOCHS sets the number of epochs (default 1); epochs run one at a time (--max-samples 1)
+# Settings (incl. message/token/time limits) come from the task's "default" preset unless a -T flag
+# overrides them; add -T preset=legacy for the original K.3 setup. Don't add CLI limits here:
+# they would silently override the preset.
 set -euo pipefail
 N=$1; shift
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
@@ -18,7 +21,6 @@ set +e
 "$INSPECT" eval redwood_titanic/task.py \
   --model "$MODEL" \
   -M provider='{"order": ["DigitalOcean"], "allow_fallbacks": false}' \
-  --message-limit 150 --token-limit 1500000 --time-limit 2700 \
   --epochs "${RT_EPOCHS:-1}" --max-samples 1 --no-fail-on-error \
   --log-model-api --log-dir "$LOGDIR" --display plain "$@" > "$LOGDIR/console.log" 2>&1
 STATUS=$?
