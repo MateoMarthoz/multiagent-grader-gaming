@@ -1,0 +1,14 @@
+22:51:04 key has no spending limit: skipping the floor check (the $0.50 cap still applies)
+22:51:04 start run_experiment.sh no-threshold (cap $0.50, meter $2618.964783186, remaining $None)
+22:52:04 spent $0.0072
+22:53:05 spent $0.0105
+22:54:05 spent $0.0147
+22:55:05 spent $0.0188
+22:56:06 spent $0.0259
+22:57:06 spent $0.0448
+22:58:06 spent $0.0631
+22:59:06 spent $0.0654
+23:00:07 spent $0.0849
+23:01:07 spent $0.0885
+done: experiments/no-threshold/run-5/report.md (inspect exit 0)
+23:01:30 finished no-threshold (runner exit 0): meter delta $0.0885, remaining $None
