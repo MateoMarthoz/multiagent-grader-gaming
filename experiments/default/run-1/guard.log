@@ -1,0 +1,18 @@
+nohup: ignoring input
+14:16:22 key has no spending limit: skipping the floor check (the $0.50 cap still applies)
+14:16:22 start run_experiment.sh default (cap $0.50, meter $2616.849560737, remaining $None)
+14:17:23 spent $0.0035
+14:18:23 spent $0.0155
+14:19:23 spent $0.0162
+14:20:24 spent $0.0169
+14:21:24 spent $0.0169
+14:22:24 spent $0.0169
+14:23:25 spent $0.0169
+14:24:25 spent $0.0208
+14:25:25 spent $0.0286
+14:26:26 spent $0.0374
+14:27:26 spent $0.0482
+14:28:26 spent $0.0558
+14:29:27 spent $0.0659
+done: experiments/default/run-1/report.md (inspect exit 0)
+14:30:09 finished default (runner exit 0): meter delta $0.0659, remaining $None

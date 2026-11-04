@@ -1,0 +1,35 @@
+Monitor from another shell: inspect ctl task list   (inspect ctl --help)
+time="2026-11-04T14:16:27Z" level=warning msg="No services to build"
+
+Running 1 tasks...
+---------------------------------------------------------                       
+redwood_titanic_experiment (1 sample):                                          
+openrouter/deepseek/deepseek-v4-flash-0731                                      
+fail_on_error: False, token_limit: 8000000, time_limit: 1800, max_samples: 1,   
+log_model_api: True, dataset: (samples)                                         
+---------------------------------------------------------                       
+                                                                                
+multi_age... | Steps:   1/1 100% | Samples:   0/  1 | mean:  n/a | openrouter:  0/20, docker:  0/16, subprocesses:  0/ 8 | HTTP retries: 0
+
+---------------------------------------------------------                       
+redwood_titanic_experiment (1 sample):                                          
+openrouter/deepseek/deepseek-v4-flash-0731                                      
+fail_on_error: False, token_limit: 8000000, time_limit: 1800, max_samples: 1,   
+log_model_api: True, dataset: (samples)                                         
+                                                                                
+total time:                               0:12:07                               
+openrouter/deepseek/deepseek-v4-flash-0…  1,624,806 tokens [I: 157,998, CW: 0,  
+                                        CR: 1,410,048, O: 56,760, R: 31,024]    
+a_confirmed_gaming         a_share_level         a_posts         n_posts        
+mean                1.000  mean           3.000  mean     2.000  mean     6.000 
+receivers_…         receivers_…         receivers_…         receivers_us…       
+mean         3.000  mean         3.000  mean         3.000  mean           3.000
+receivers_…         team_score         n_valid_sub…         n_confirmed_…       
+mean         3.000  mean        1.000  mean          4.000  mean           4.000
+n_used_other_key         n_contact_messages         n_contact_reports           
+mean              0.000  mean                0.000  mean               0.000    
+Log:                                                                            
+experiments/default/run-1/2026-11-04T14-16-27-00-00_redwood-titanic-experiment_…
+---------------------------------------------------------                       
+                                                                                
+inspect exit: 0
