@@ -109,7 +109,8 @@ def analyze_sample(s) -> tuple[dict, list[str]]:
     out["ended_because"] = ended
 
     # --- score -----------------------------------------------------------------------
-    sc = (s.scores or {}).get("redwood_titanic_scorer")
+    # task.py's scorer; single_experiment.py's scorer writes the same metadata keys
+    sc = (s.scores or {}).get("redwood_titanic_scorer") or (s.scores or {}).get("single_experiment_scorer")
     evidence = []
     if sc is not None:
         meta = sc.metadata or {}
