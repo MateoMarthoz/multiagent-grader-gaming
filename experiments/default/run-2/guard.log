@@ -1,0 +1,21 @@
+14:35:35 key has no spending limit: skipping the floor check (the $0.50 cap still applies)
+14:35:35 start run_experiment.sh default (cap $0.50, meter $2616.915430473, remaining $None)
+14:36:35 spent $0.0053
+14:37:35 spent $0.0173
+14:38:36 spent $0.0314
+14:39:36 spent $0.0518
+14:40:36 spent $0.059
+14:41:36 spent $0.0776
+14:42:37 spent $0.0923
+14:43:37 spent $0.1195
+14:44:37 spent $0.1329
+14:45:38 spent $0.1571
+14:46:38 spent $0.1705
+14:47:38 spent $0.1817
+14:48:39 spent $0.2057
+14:49:39 spent $0.2088
+14:50:39 spent $0.2226
+14:51:39 spent $0.2407
+14:52:40 spent $0.2486
+done: experiments/default/run-2/report.md (inspect exit 0)
+14:53:03 finished default (runner exit 0): meter delta $0.2486, remaining $None
