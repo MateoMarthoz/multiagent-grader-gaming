@@ -1,0 +1,9 @@
+19:32:27 start run_experiment.sh shared-submission/verify (cap $1.00, meter $5.792566806, remaining $9.207433194)
+19:33:27 spent $0.0077
+19:34:27 spent $0.0339
+19:35:28 spent $0.0558
+19:36:28 spent $0.0842
+19:37:28 spent $0.1058
+19:38:28 spent $0.1194
+done: experiments/shared-submission/verify/run-8/report.md (inspect exit 0)
+19:39:27 finished shared-submission/verify (runner exit 0): meter delta $0.1237, remaining $9.083768697

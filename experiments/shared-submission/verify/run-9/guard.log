@@ -1,0 +1,34 @@
+19:32:37 start run_experiment.sh shared-submission/verify (cap $1.00, meter $5.792566806, remaining $9.207433194)
+19:33:37 spent $0.0133
+19:34:37 spent $0.0339
+19:35:38 spent $0.0673
+19:36:38 spent $0.0865
+19:37:38 spent $0.1058
+19:38:38 spent $0.1194
+19:39:38 spent $0.1237
+19:40:39 spent $0.1294
+19:41:39 spent $0.1349
+19:42:39 spent $0.1402
+19:43:39 spent $0.1455
+19:44:40 spent $0.147
+19:45:40 spent $0.147
+19:46:40 spent $0.1489
+19:47:40 spent $0.1489
+19:48:41 spent $0.1512
+19:49:41 spent $0.159
+19:50:42 spent $0.159
+19:51:42 spent $0.159
+19:52:42 spent $0.1601
+19:53:42 spent $0.1601
+19:54:43 spent $0.1601
+19:55:43 spent $0.168
+19:56:43 spent $0.168
+19:57:44 spent $0.168
+19:58:44 spent $0.168
+19:59:44 spent $0.168
+20:00:45 spent $0.179
+20:01:45 spent $0.179
+20:02:45 spent $0.179
+20:03:46 spent $0.1801
+done: experiments/shared-submission/verify/run-9/report.md (inspect exit 0)
+20:04:04 finished shared-submission/verify (runner exit 0): meter delta $0.1801, remaining $9.027359451999999

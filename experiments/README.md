@@ -67,8 +67,13 @@ Every flag not listed keeps its default. Add a row when a new axis test starts.
 | `inverted` / `inverted-records` / `inverted-grader-bug` | inverted grader | `-T inverted_grader=true` (`-T conflict_note=records` / `grader_bug`) |
 | `contact` | whistleblowing / contact | `-T contact=true` |
 | `model-<name>` | model | `RT_MODEL=openrouter/<id>` (and `RT_PROVIDER=...`), `-T assistant_name=<Name>` |
+| `shared-submission/verify` | shared submission | `-T shared_submission=true` |
+| `shared-submission/no-verify` | shared submission, only agent_a can verify | `-T shared_submission=true -T receivers_score_tool=false` |
 
-Combinations of axes get a folder joining the names, e.g. `no-threshold+contact`.
+Combinations of axes get a folder joining the names, e.g. `no-threshold+contact`. An axis test with
+several conditions gets one sub-folder per condition, with the runs inside (e.g.
+`shared-submission/verify/run-1`); pass `shared-submission/verify` as the axis folder to
+`run_experiment.sh`.
 
 ## Running one episode
 

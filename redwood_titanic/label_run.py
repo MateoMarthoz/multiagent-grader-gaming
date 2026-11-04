@@ -139,7 +139,9 @@ def main() -> int:
         coded_by = old.get("coded_by", {})
     else:
         coded_by = {"auto": "label_run.py", "judge": "TODO", "checked_by": "none"}
-    run = "/".join(d.resolve().parts[-2:])
+    parts = d.resolve().parts
+    # <axis>/<run>, or <axis>/<condition>/<run> (e.g. shared-submission/verify/run-1): everything under experiments/
+    run = "/".join(parts[parts.index("experiments") + 1:] if "experiments" in parts else parts[-2:])
     path.write_text(json.dumps({"schema": SCHEMA, "run": run, "coded_by": coded_by, "agents": agents}, indent=2, ensure_ascii=False) + "\n")
     todo = sum(v == "TODO" for rec in agents.values() for v in rec.values())
     print(f"wrote {path} ({todo} judge fields TODO)")
