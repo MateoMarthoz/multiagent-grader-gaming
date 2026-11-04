@@ -1,27 +1,40 @@
 #!/usr/bin/env bash
 # Run one episode of the main experiment (experiment.py: the experiments-main default, one -T flag
 # per axis) and write its report.
-# Usage: redwood_titanic/run_experiment.sh <run-name> [-T flag=value ...] [other inspect eval args]
-#   e.g. redwood_titanic/run_experiment.sh default-1
-#        redwood_titanic/run_experiment.sh nothr-1 -T threshold=false
-# Run it in the background so the terminal stays free:
-#   nohup redwood_titanic/run_experiment.sh default-1 > /dev/null 2>&1 &   (log: logs/experiments/run-default-1/)
-# Spend cap: redwood_titanic/run_guarded.sh <cap-usd> run_experiment.sh <run-name> [...]
-# RT_MODEL overrides the model, for a free dry run: RT_MODEL=mockllm/model run_experiment.sh dryrun
+# Usage: redwood_titanic/run_experiment.sh <axis-folder> <run-name> [-T flag=value ...] [other inspect eval args]
+#   Final runs go to experiments/<axis-folder>/<run-name>/ (tracked in git; folder names and their
+#   flags: experiments/README.md), e.g.
+#        redwood_titanic/run_experiment.sh default run-1
+#        redwood_titanic/run_experiment.sh no-threshold run-1 -T threshold=false
+#   Test runs that shouldn't be kept: RT_RUNS_DIR=logs/experiments (gitignored). Mock-model dry runs
+#   (RT_MODEL=mockllm/model) go there automatically.
+# Run it in the background with a spend cap so the terminal stays free:
+#   mkdir -p experiments/default/run-1
+#   nohup redwood_titanic/run_guarded.sh 0.50 run_experiment.sh default run-1 > experiments/default/run-1/guard.log 2>&1 &
 # RT_PROVIDER: OpenRouter provider-routing JSON (default: DigitalOcean only, the pin used for
 # deepseek-v4-flash-0731); RT_PROVIDER= (empty) sends no provider param
 set -euo pipefail
-N=$1; shift
+if [ $# -lt 2 ] || [[ "$1" == -* ]] || [[ "$2" == -* ]]; then
+  echo "usage: $0 <axis-folder> <run-name> [-T flag=value ...]   (e.g. default run-1)" >&2; exit 2
+fi
+AXIS=$1; N=$2; shift 2
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 cd "$ROOT"                                  # Inspect needs a relative task path
 MODEL=${RT_MODEL:-openrouter/deepseek/deepseek-v4-flash-0731}
+# final runs: experiments/ (tracked); mock dry runs default to the gitignored logs/experiments
+DEFAULT_RUNS=experiments
+[ "$MODEL" = mockllm/model ] && DEFAULT_RUNS=logs/experiments
+RUNS=${RT_RUNS_DIR:-$DEFAULT_RUNS}
 PROVIDER=${RT_PROVIDER-'{"order": ["DigitalOcean"], "allow_fallbacks": false}'}
 PROVIDER_ARGS=()
 [ -n "$PROVIDER" ] && [ "$MODEL" != mockllm/model ] && PROVIDER_ARGS=(-M provider="$PROVIDER")
-LOGDIR="logs/experiments/run-$N"
+LOGDIR="$RUNS/$AXIS/$N"
 PY=/root/capstone/.venv/bin/python
 INSPECT=/root/capstone/.venv/bin/inspect
-if [ -e "$LOGDIR" ]; then echo "$LOGDIR exists; refusing to overwrite" >&2; exit 1; fi
+# the folder may already exist (e.g. made for the guard log), but must not hold a finished run
+if compgen -G "$LOGDIR/*.eval" >/dev/null || [ -e "$LOGDIR/report.md" ]; then
+  echo "$LOGDIR already has a run; refusing to overwrite" >&2; exit 1
+fi
 mkdir -p "$LOGDIR"
 [ "$MODEL" = mockllm/model ] || "$PY" redwood_titanic/or_usage.py > "$LOGDIR/usage_before.json"
 set +e

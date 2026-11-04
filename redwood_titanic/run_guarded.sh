@@ -4,7 +4,8 @@
 # passes CAP_USD, sends SIGINT to the eval so Inspect stops and writes its log, and the runner
 # then writes the report as usual. Refuses to start if the key's remaining limit minus CAP_USD
 # would fall below RT_FLOOR_USD (default 2).
-# Usage: redwood_titanic/run_guarded.sh <cap-usd> <run_experiment.sh|run_multi.sh|run_trial.sh|run_confederate.sh> <run-name> [args...]
+# Usage: redwood_titanic/run_guarded.sh <cap-usd> <run_experiment.sh|run_multi.sh|run_trial.sh|run_confederate.sh> <runner args...>
+#   (run_experiment.sh takes <axis-folder> <run-name>; the others take <run-name>)
 #   RT_MODEL=openrouter/qwen/qwen3-235b-a22b-2507 RT_PROVIDER='{"order":["Venice"],"allow_fallbacks":false}' \
 #     redwood_titanic/run_guarded.sh 1.00 run_multi.sh qwen-instruct-cap5-thr -T assistant_name=Qwen ...
 set -uo pipefail

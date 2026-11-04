@@ -179,8 +179,11 @@ agent, no message cap. DeepSeek V4 Flash
 0731 via OpenRouter pinned to DigitalOcean.
 
     /root/capstone/.venv/bin/python redwood_titanic/experiment_selftest.py   # free; must print ALL CHECKS PASSED
-    nohup redwood_titanic/run_experiment.sh default-1 > /dev/null 2>&1 &     # -> logs/experiments/run-default-1/report.md
-    redwood_titanic/run_guarded.sh 1.00 run_experiment.sh nothr-1 -T threshold=false   # with a $1 spend cap
+    mkdir -p experiments/default/run-1                                        # final runs: experiments/<axis>/<run>/
+    nohup redwood_titanic/run_guarded.sh 0.50 run_experiment.sh default run-1 > experiments/default/run-1/guard.log 2>&1 &
+    RT_MODEL=mockllm/model redwood_titanic/run_experiment.sh dryrun run-1     # free dry run -> logs/experiments/dryrun/run-1/
+
+Folder names per axis test and their flags: `experiments/README.md`.
 
 | Axis | Flag(s) (default) | Effect |
 |---|---|---|

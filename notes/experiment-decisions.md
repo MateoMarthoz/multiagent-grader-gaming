@@ -11,7 +11,8 @@ pinned to DigitalOcean. General rule: where nothing else is decided, follow the 
 
 Code: `redwood_titanic/experiment.py` (task `redwood_titanic_experiment`) holds the default and
 one flag per axis; it calls `multi_task.py`, whose own defaults still reproduce runs 1-20.
-Run with `redwood_titanic/run_experiment.sh <name> [-T flag=value ...]`.
+Run with `redwood_titanic/run_experiment.sh <axis-folder> <run-name> [-T flag=value ...]`; final runs
+go to `experiments/<axis-folder>/<run-name>/` (tracked in git, see `experiments/README.md`).
 
 ## Decisions, by difference
 

@@ -28,7 +28,7 @@ Axes (each flag changes one thing from the default):
 
 The machinery is multi_task.py, whose own defaults still reproduce runs 1-20 in notes/runs.md.
 
-    redwood_titanic/run_experiment.sh <run-name> [-T flag=value ...]
+    redwood_titanic/run_experiment.sh <axis-folder> <run-name> [-T flag=value ...]   # -> experiments/<axis-folder>/<run-name>/
 """
 
 from __future__ import annotations
