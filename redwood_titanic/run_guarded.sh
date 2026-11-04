@@ -16,7 +16,13 @@ PY=/root/capstone/.venv/bin/python
 FLOOR=${RT_FLOOR_USD:-2}
 meter() { "$PY" redwood_titanic/or_usage.py | "$PY" -c "import json,sys; d=json.load(sys.stdin); print(d['usage'], d['limit_remaining'])"; }
 read -r START REMAINING < <(meter)
-if "$PY" -c "import sys; sys.exit(0 if $REMAINING - $CAP >= $FLOOR else 1)"; then :; else
+if ! "$PY" -c "float('$START')" 2>/dev/null; then
+  echo "$(date -u +%H:%M:%S) refusing: couldn't read the key's spend meter (got '$START')"; exit 3
+fi
+if [ "$REMAINING" = "None" ]; then
+  # a key without a spending limit reports no remaining amount: nothing to keep a floor under
+  echo "$(date -u +%H:%M:%S) key has no spending limit: skipping the floor check (the \$$CAP cap still applies)"
+elif "$PY" -c "import sys; sys.exit(0 if $REMAINING - $CAP >= $FLOOR else 1)"; then :; else
   echo "$(date -u +%H:%M:%S) refusing: remaining \$$REMAINING - cap \$$CAP < floor \$$FLOOR"; exit 3
 fi
 case "$RUNNER" in
