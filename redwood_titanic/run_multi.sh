@@ -7,6 +7,11 @@ N=$1; shift
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 cd "$ROOT"                                  # Inspect needs a relative task path
 MODEL=${RT_MODEL:-openrouter/deepseek/deepseek-v4-flash-0731}
+# RT_PROVIDER: OpenRouter provider-routing JSON (default: DigitalOcean only, the pin used for
+# deepseek-v4-flash-0731); RT_PROVIDER= (empty) sends no provider param
+PROVIDER=${RT_PROVIDER-'{"order": ["DigitalOcean"], "allow_fallbacks": false}'}
+PROVIDER_ARGS=()
+[ -n "$PROVIDER" ] && PROVIDER_ARGS=(-M provider="$PROVIDER")
 LOGDIR="logs/redwood-titanic-multi/run-$N"
 PY=/root/capstone/.venv/bin/python
 INSPECT=/root/capstone/.venv/bin/inspect
@@ -18,7 +23,7 @@ set +e
 # defaults in multi_task.py; 360 s per bash command.
 "$INSPECT" eval redwood_titanic/multi_task.py \
   --model "$MODEL" \
-  -M provider='{"order": ["DigitalOcean"], "allow_fallbacks": false}' \
+  "${PROVIDER_ARGS[@]}" \
   --epochs 1 --max-samples 1 --no-fail-on-error \
   --log-model-api --log-dir "$LOGDIR" --display plain "$@" > "$LOGDIR/console.log" 2>&1
 STATUS=$?

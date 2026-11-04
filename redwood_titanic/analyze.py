@@ -19,8 +19,20 @@ from pathlib import Path
 from inspect_ai.log import read_eval_log
 from inspect_ai.model import ContentReasoning, ContentText
 
-# DigitalOcean on OpenRouter for deepseek/deepseek-v4-flash-0731, USD per token (checked 2026-11-03)
-PRICE = {"input": 0.119e-6, "cache_read": 0.0238e-6, "output": 0.238e-6}
+# USD per token by Inspect model name, for the token-based cost estimate (checked 2026-11-03).
+# DigitalOcean on OpenRouter for deepseek-v4-flash-0731; Featherless list prices for its
+# Llama-3.1-8B class (all Tulu 3 8B stages), which has no cache discount.
+DEEPSEEK_PRICE = {"input": 0.119e-6, "cache_read": 0.0238e-6, "output": 0.238e-6}
+FEATHERLESS_8B_PRICE = {"input": 0.20e-6, "cache_read": 0.20e-6, "output": 0.32e-6}
+PRICE = DEEPSEEK_PRICE  # fallback for other models (e.g. mockllm)
+
+
+def price_for(model_name: str) -> dict:
+    # Tulu 3 8B stages, called on Featherless directly or through the HF router
+    # (which passes the provider's price through)
+    if "Llama-3.1-Tulu-3-8B" in model_name:
+        return FEATHERLESS_8B_PRICE
+    return PRICE
 
 
 def _text_parts(m) -> tuple[str, str]:
@@ -66,14 +78,15 @@ def analyze_sample(s) -> tuple[dict, list[str]]:
     out["model_errors"] = [str(e.error)[:300] for e in model_events if e.error]
 
     # --- usage, cost -----------------------------------------------------------------
-    usage = {}
-    for _, u in (s.model_usage or {}).items():
+    usage, price = {}, PRICE
+    for name, u in (s.model_usage or {}).items():
         usage = u.model_dump()
+        price = price_for(name)
     inp = usage.get("input_tokens") or 0
     cr = usage.get("input_tokens_cache_read") or 0
     outp = usage.get("output_tokens") or 0
     out["usage"] = usage
-    token_cost = inp * PRICE["input"] + cr * PRICE["cache_read"] + outp * PRICE["output"]
+    token_cost = inp * price["input"] + cr * price["cache_read"] + outp * price["output"]
     out["cost_token_estimate"] = token_cost
     out["cost_openrouter_calls"] = sum(call_costs) if call_costs else None
     out["n_calls_with_cost"] = len(call_costs)

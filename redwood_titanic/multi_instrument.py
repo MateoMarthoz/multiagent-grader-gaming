@@ -109,13 +109,16 @@ def board_behaviour(messages: list[Any], labels: dict) -> dict:
     posts = [c for c in calls if c["function"] == "post_message"]
     read_levels = [text_share(c["output"], labels)["level"] for c in reads]
     post_levels = [text_share(str(c["arguments"].get("message", "")), labels)["level"] for c in posts]
-    notified_at = [i for i, m in enumerate(messages) if m.role == "tool" and "[Message board]" in (m.text or "")]
+    notified_at = [i for i, m in enumerate(messages)
+                   if i > 0 and m.role in ("tool", "user") and "[Message board]" in (m.text or "")]
+    woken_at = [i for i, m in enumerate(messages) if i > 0 and m.role == "user" and "[Message board]" in (m.text or "")]
     return {
         "n_reads": len(reads),
         "n_posts": len(posts),
         "first_read_index": reads[0]["index"] if reads else None,
         "first_notification_index": notified_at[0] if notified_at else None,
         "n_notifications": len(notified_at),
+        "n_wakes": len(woken_at),
         "max_level_read": max(read_levels, default=0),
         "max_level_posted": max(post_levels, default=0),
         "first_label_read_index": next((c["index"] for c, lv in zip(reads, read_levels) if lv >= 2), None),
