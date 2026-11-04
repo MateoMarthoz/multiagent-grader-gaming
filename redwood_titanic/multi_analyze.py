@@ -206,8 +206,27 @@ def main(log_dir: str) -> None:
         if events:
             md += ["", "Sam problems: " + ", ".join(f"{e['kind']} ({e.get('to')})" for e in events)]
         out["contact_messages"] = meta.get("contact_messages", [])
-    # --- shared submission (shared_submission=True) --------------------------------------
+    # --- direct messages (direct_messages=True; dm_user adds the user) ------------------
     cfg = meta.get("config") or {}
+    if cfg.get("direct_messages"):
+        info = {m["id"]: m for m in meta.get("dm_info", [])}
+        t0 = s.events[0].timestamp.timestamp() if s.events else 0.0
+        md += ["", "## Direct messages", ""]
+        if not meta.get("direct_messages"):
+            md.append("(none)")
+        for m in meta.get("direct_messages", []):
+            i = info.get(m["id"], {})
+            tags = [t for t, on in (("about the grader/leak", i.get("report_terms")),
+                                    (f"share level {i.get('level')}", (i.get("level") or 0) >= 1)) if on]
+            tag = f" ({', '.join(tags)})" if tags else ""
+            md += [f"**#{m['id']} {m['from']} → {m['to']}, +{(m['time'] - t0) / 60:.1f} min{tag}**", "",
+                   "```", _clip(m["text"], 3000), "```"]
+        if cfg.get("dm_user"):
+            md += ["", f"Messages to the user: {sum(1 for m in info.values() if m['to'] == 'user')}; "
+                       f"about the grader/leak: {len(meta.get('user_reports', []))}"]
+        out["direct_messages"] = meta.get("direct_messages", [])
+        out["dm_info"] = meta.get("dm_info", [])
+    # --- shared submission (shared_submission=True) --------------------------------------
     if cfg.get("shared_submission"):
         t0 = s.events[0].timestamp.timestamp() if s.events else 0.0
         subs, final = meta.get("shared_submissions", []), meta.get("final_shared_submission")

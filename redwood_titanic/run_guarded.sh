@@ -12,7 +12,8 @@ set -uo pipefail
 CAP=$1; RUNNER=$2; shift 2
 cd "$(dirname "$0")/.."
 : "${OPENROUTER_API_KEY:?set OPENROUTER_API_KEY first}"
-PY=/root/capstone/.venv/bin/python
+VENV=${RT_VENV:-$( [ -d /root/capstone/.venv ] && echo /root/capstone/.venv || echo /root/ARENA_materials/.venv )}
+PY=$VENV/bin/python
 FLOOR=${RT_FLOOR_USD:-2}
 meter() { "$PY" redwood_titanic/or_usage.py | "$PY" -c "import json,sys; d=json.load(sys.stdin); print(d['usage'], d['limit_remaining'])"; }
 read -r START REMAINING < <(meter)
