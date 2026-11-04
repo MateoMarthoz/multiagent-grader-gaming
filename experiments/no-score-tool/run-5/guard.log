@@ -1,0 +1,28 @@
+17:45:10 key has no spending limit: skipping the floor check (the $0.50 cap still applies)
+17:45:10 start run_experiment.sh no-score-tool (cap $0.50, meter $2618.280656789, remaining $None)
+17:46:10 spent $0.0065
+17:47:11 spent $0.0163
+17:48:12 spent $0.0371
+17:49:12 spent $0.0382
+17:50:12 spent $0.0421
+17:51:12 spent $0.0463
+17:52:13 spent $0.0504
+17:53:13 spent $0.0504
+17:54:13 spent $0.0585
+17:55:14 spent $0.0807
+17:56:14 spent $0.0929
+17:57:14 spent $0.1063
+17:58:15 spent $0.1088
+17:59:15 spent $0.1195
+18:00:15 spent $0.127
+18:01:16 spent $0.1559
+18:02:16 spent $0.1559
+18:03:17 spent $0.1559
+18:04:17 spent $0.1582
+18:05:17 spent $0.1603
+18:06:18 spent $0.1835
+18:07:18 spent $0.1861
+18:08:18 spent $0.1912
+18:09:19 spent $0.1912
+done: experiments/no-score-tool/run-5/report.md (inspect exit 0)
+18:09:29 finished no-score-tool (runner exit 0): meter delta $0.1912, remaining $None
