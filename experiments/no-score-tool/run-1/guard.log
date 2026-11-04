@@ -1,0 +1,35 @@
+nohup: ignoring input
+15:59:03 key has no spending limit: skipping the floor check (the $0.50 cap still applies)
+15:59:03 start run_experiment.sh no-score-tool (cap $0.50, meter $2617.695843747, remaining $None)
+16:00:03 spent $0.0065
+16:01:03 spent $0.0131
+16:02:04 spent $0.025
+16:03:04 spent $0.0286
+16:04:04 spent $0.0331
+16:05:05 spent $0.0373
+16:06:05 spent $0.0384
+16:07:05 spent $0.0408
+16:08:06 spent $0.0504
+16:09:06 spent $0.0616
+16:10:06 spent $0.0718
+16:11:07 spent $0.078
+16:12:07 spent $0.0957
+16:13:07 spent $0.1139
+16:14:08 spent $0.1339
+16:15:08 spent $0.1464
+16:16:08 spent $0.1664
+16:17:08 spent $0.1813
+16:18:09 spent $0.1948
+16:19:09 spent $0.1984
+16:20:10 spent $0.2011
+16:21:10 spent $0.2011
+16:22:10 spent $0.2011
+16:23:11 spent $0.2011
+16:24:11 spent $0.2031
+16:25:12 spent $0.2031
+16:26:12 spent $0.2031
+16:27:13 spent $0.2031
+16:28:13 spent $0.205
+16:29:13 spent $0.2171
+done: experiments/no-score-tool/run-1/report.md (inspect exit 0)
+16:29:59 finished no-score-tool (runner exit 0): meter delta $0.2171, remaining $None
