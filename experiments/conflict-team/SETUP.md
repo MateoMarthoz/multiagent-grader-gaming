@@ -33,4 +33,8 @@ message board; 30 minutes, 2M tokens per agent.
 `redwood_titanic/multi_team_compose.yaml`. If a nudge is added in later runs, it is recorded here
 with the run it starts from.
 
+Scoring change after run-5 (no effect on runs 1-5 except run-4): the scorer kills every leftover
+process on `team` before reading the shared file and retries the read. run-4's recorded host scores
+(0 0 0 0) are wrong for that reason; its final file is agent_d's key (true result 0 0 0 1).
+
 Per-run results: each run's `report.md`, `analysis.md` and the runs table in `experiments/README.md`.

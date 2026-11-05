@@ -1,0 +1,20 @@
+18:10:16 start run_experiment.sh shared-escalate (cap $1.50, meter $9.422590879, remaining $5.5774091210000005)
+18:11:16 spent $0.0057
+18:12:17 spent $0.0336
+18:13:17 spent $0.0637
+18:14:17 spent $0.1077
+18:15:18 spent $0.141
+18:16:18 spent $0.2168
+18:17:18 spent $0.304
+18:18:19 spent $0.3494
+18:19:19 spent $0.4723
+18:20:19 spent $0.5147
+18:21:20 spent $0.5476
+18:22:20 spent $0.603
+18:23:20 spent $0.6437
+18:24:20 spent $0.6992
+18:25:21 spent $0.7649
+18:26:21 spent $0.8266
+18:27:21 spent $0.8859
+done: experiments/shared-escalate/run-1/report.md (inspect exit 0)
+18:28:05 finished shared-escalate (runner exit 0): meter delta $0.888, remaining $4.689373342

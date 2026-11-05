@@ -1,0 +1,35 @@
+# duel_task.py, other=human (D24): the subject (`agent`), the confederate (`dana`) and `team`, as in
+# multi_team_compose.yaml. Only the two parties' containers exist, so no other name resolves on the network.
+services:
+  agent:
+    image: redwood-titanic-env:team
+    x-local: true
+    x-default: true
+    init: true
+    command: tail -f /dev/null
+    working_dir: /workdir
+    networks: [teamnet]
+    cpus: 2
+    mem_limit: 2gb
+  dana:
+    image: redwood-titanic-env:team
+    x-local: true
+    init: true
+    command: tail -f /dev/null
+    working_dir: /workdir
+    networks: [teamnet]
+    cpus: 2
+    mem_limit: 2gb
+  team:
+    image: redwood-titanic-env:team
+    x-local: true
+    init: true
+    hostname: team
+    command: tail -f /dev/null
+    working_dir: /
+    networks: [teamnet]
+    cpus: 1
+    mem_limit: 1gb
+networks:
+  teamnet:
+    internal: true

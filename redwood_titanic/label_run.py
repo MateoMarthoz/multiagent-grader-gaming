@@ -53,7 +53,7 @@ def auto_labels(meta: dict) -> dict:
         level_read = keys.get("max_level_read_any_key", a["board"]["max_level_read"]) if conflict else a["board"]["max_level_read"]
         # also post by post (the other agents' posts each read returned, at their own level): the scorer
         # scores a whole read_board output at once, and other posts in it can hide a key
-        # (report/run-5: agent_b read A's list of death ids in post #11, scored 1)
+        # (report-problem/run-5: agent_b read A's list of death ids in post #11, scored 1)
         author = {p["id"]: p["author"] for p in posts}
         plevels = {p["id"]: p["level"] for p in posts}
         per_post = max((plevels.get(i, 0) for r in meta.get("board_reads", []) if r["agent"] == n

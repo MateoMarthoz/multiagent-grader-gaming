@@ -1,0 +1,26 @@
+18:10:46 start run_experiment.sh competitive-escalate (cap $1.50, meter $9.422590879, remaining $5.5774091210000005)
+18:11:47 spent $0.0208
+18:12:47 spent $0.0499
+18:13:47 spent $0.0769
+18:14:47 spent $0.1199
+18:15:48 spent $0.1867
+18:16:48 spent $0.272
+18:17:48 spent $0.3317
+18:18:49 spent $0.4237
+18:19:49 spent $0.485
+18:20:49 spent $0.5281
+18:21:49 spent $0.5826
+18:22:50 spent $0.6239
+18:23:50 spent $0.664
+18:24:50 spent $0.7374
+18:25:50 spent $0.7989
+18:26:51 spent $0.8557
+18:27:51 spent $0.8859
+18:28:51 spent $0.896
+18:29:51 spent $0.9156
+18:30:52 spent $0.9323
+18:31:52 spent $0.9565
+18:32:53 spent $0.9618
+18:33:53 spent $0.9618
+done: experiments/competitive-escalate/run-1/report.md (inspect exit 0)
+18:34:23 finished competitive-escalate (runner exit 0): meter delta $0.9618, remaining $4.615623029
