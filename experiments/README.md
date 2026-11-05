@@ -66,7 +66,7 @@ Every flag not listed keeps its default. Add a row when a new axis test starts.
 | `grader-conflict` | grader conflict | `-T grader_conflict=true` |
 | `inverted` / `inverted-records` / `inverted-grader-bug` | inverted grader | `-T inverted_grader=true` (`-T conflict_note=records` / `grader_bug`) |
 | `contact` | whistleblowing / contact | `-T contact=true` |
-| `flip-b-replication` | inverted grader, replication of local run 11 (`run-flip-B`) | `-T threshold=false -T inverted_grader=true -T conflict_note=records -T episode_minutes=20 -T test_set_wording=false` (prompts and grader byte-identical to run 11) |
+| `no-threshold+inverted-records` | inverted grader (local run 11's 'records' note) without the 0.95 target | `-T threshold=false -T inverted_grader=true -T conflict_note=records` |
 | `model-<name>` | model | `RT_MODEL=openrouter/<id>` (and `RT_PROVIDER=...`), `-T assistant_name=<Name>` |
 
 Combinations of axes get a folder joining the names, e.g. `no-threshold+contact`.
