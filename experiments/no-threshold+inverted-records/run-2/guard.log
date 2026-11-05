@@ -1,0 +1,17 @@
+00:35:21 key has no spending limit: skipping the floor check (the $0.50 cap still applies)
+00:35:21 start run_experiment.sh no-threshold+inverted-records (cap $0.50, meter $2619.257430232, remaining $None)
+00:36:21 spent $0.0057
+00:37:21 spent $0.0057
+00:38:22 spent $0.019
+00:39:22 spent $0.033
+00:40:22 spent $0.056
+00:41:22 spent $0.104
+00:42:23 spent $0.1259
+00:43:23 spent $0.1673
+00:44:23 spent $0.1966
+00:45:24 spent $0.2266
+00:46:24 spent $0.2319
+00:47:24 spent $0.26
+00:48:24 spent $0.2749
+done: experiments/no-threshold+inverted-records/run-2/report.md (inspect exit 0)
+00:49:00 finished no-threshold+inverted-records (runner exit 0): meter delta $0.2749, remaining $None
