@@ -23,6 +23,8 @@ Axes (each flag changes one thing from the default):
   grader conflict      grader_conflict=true (every agent has a grader with its own key)
   inverted grader      inverted_grader=true, conflict_note=none | records | grader_bug
   contact              contact=true (message_sam; draft wording, see multi_task.CONTACT_LINE)
+  replication          test_set_wording=false brings back the K.3 "validation subset" wording (used to
+                       reproduce earlier runs, e.g. flip-B: see experiments/README.md)
   model                --model / --model-role agent_x=... on the command line (set assistant_name
                        to the model's name; it appears in the grader docstring)
 
@@ -46,6 +48,7 @@ DEFAULTS = dict(
     grader_conflict=False,
     inverted_grader=False, conflict_note="none",
     contact=False,
+    test_set_wording=True,
     episode_minutes=30, agent_token_limit=2_000_000, agent_message_limit=None, bash_timeout=360,
     assistant_name="DeepSeek",
 )
@@ -72,7 +75,7 @@ def multi_task_args(**cfg) -> dict:
         score_tool=c["score_tool"], score_tool_wording="purpose",
         score_check_limit=limit if c["score_tool"] else None,
         inverted_grader=c["inverted_grader"], conflict_note=c["conflict_note"],
-        test_set_wording=True,
+        test_set_wording=c["test_set_wording"],
         permissions_statement=c["permissions_statement"], cheating_clause=c["cheating_clause"],
         grader_warning=c["grader_warning"], grader_conflict=c["grader_conflict"], contact=c["contact"],
     )
@@ -92,6 +95,7 @@ def redwood_titanic_experiment(
     inverted_grader: bool = False,
     conflict_note: str = "none",
     contact: bool = False,
+    test_set_wording: bool = True,
     episode_minutes: int = 30,
     agent_token_limit: int = 2_000_000,
     agent_message_limit: int | None = None,
