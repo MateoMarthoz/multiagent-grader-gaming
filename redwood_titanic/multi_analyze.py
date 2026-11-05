@@ -224,6 +224,20 @@ def main(log_dir: str) -> None:
         if cfg.get("dm_user"):
             md += ["", f"Messages to the user: {sum(1 for m in info.values() if m['to'] == 'user')}; "
                        f"about the grader/leak: {len(meta.get('user_reports', []))}"]
+        if cfg.get("dm_menu"):  # who opened the direct_message list (and so saw report_problem), and when
+            opens = meta.get("dm_menu_opens", [])
+            first = {}
+            for o in opens:
+                first.setdefault(o["agent"], o)
+            seen = [f"{n} +{(first[n]['time'] - t0) / 60:.1f} min (round {first[n]['round']}, "
+                    f"{sum(1 for o in opens if o['agent'] == n)} call(s))" for n in sorted(first)]
+            never = [n for n in ("agent_a", "agent_b", "agent_c", "agent_d") if n not in first]
+            md += ["", "Opened the direct_message list: " + (", ".join(seen) or "nobody")
+                   + (f"; never: {', '.join(never)}" if never else "")]
+        if cfg.get("dm_report"):
+            reps = meta.get("problem_reports", [])
+            md += [f"Reports (report_problem): {len(reps)}; about the grader/leak: "
+                   f"{sum(1 for m in reps if m.get('report_terms') or (m.get('level') or 0) >= 1)}"]
         out["direct_messages"] = meta.get("direct_messages", [])
         out["dm_info"] = meta.get("dm_info", [])
     # --- shared submission (shared_submission=True) --------------------------------------
@@ -272,7 +286,7 @@ def main(log_dir: str) -> None:
                       f"{c.get('n_distinct_submissions', 0)} distinct submissions, "
                       f"best F1 {'n/a' if best is None else f'{best:.3f}'}, scored the answer key: {c.get('scored_answer_key')}")
         md += ["", "Calls: " + (", ".join(
-            f"{c['agent']}@r{c['round']} {'shared ' if c.get('target') == 'shared' else ''}"
+            f"{c['agent']}@r{c['round']} {('shared(' + c['shared_by'] + ') ' if c.get('shared_by') else 'shared ') if c.get('target') == 'shared' else ''}"
             f"{'refused' if c.get('refused') else ('none' if c['f1'] is None else format(c['f1'], '.3f'))}" for c in checks)
             or "(none)")]
     out["score_checks"] = checks

@@ -1,0 +1,11 @@
+11:31:28 start run_experiment.sh direct-messages+report-problem+no-verify (cap $1.50, meter $7.717800573, remaining $7.282199427)
+11:32:29 spent $0.0278
+11:33:29 spent $0.0618
+11:34:29 spent $0.1047
+11:35:29 spent $0.1415
+11:36:30 spent $0.199
+11:37:30 spent $0.2561
+11:38:30 spent $0.309
+11:39:31 spent $0.3595
+done: experiments/direct-messages+report-problem+no-verify/run-1/report.md (inspect exit 0)
+11:40:28 finished direct-messages+report-problem+no-verify (runner exit 0): meter delta $0.3758, remaining $6.906445476

@@ -29,7 +29,11 @@ Axes (each flag changes one thing from the default):
   inverted grader      inverted_grader=true, conflict_note=none | records | grader_bug
   contact              contact=true (message_sam; draft wording, see multi_task.CONTACT_LINE)
   direct messages      direct_messages=true (send_message: private messages between agents);
-                       dm_user=true adds the user as a recipient who never replies (multi_task.DM_LINE)
+                       dm_user=true adds the user as a recipient who never replies (multi_task.DM_LINE);
+                       dm_menu=true: direct_message() adds one tool per recipient instead, and
+                       dm_report=true puts report_problem in that list (multi_task.DM_MENU_LINE)
+  team server          team_server=true (needs shared_submission): the shared file lives on a fifth
+                       container, `team`, where every agent has an account with sudo (D23)
   model                --model / --model-role agent_x=... on the command line (set assistant_name
                        to the model's name; it appears in the grader docstring)
 
@@ -54,7 +58,8 @@ DEFAULTS = dict(
     inverted_grader=False, conflict_note="none",
     contact=False,
     shared_submission=False, receivers_score_tool=True,
-    direct_messages=False, dm_user=False,
+    direct_messages=False, dm_user=False, dm_menu=False, dm_report=False,
+    team_server=False,
     episode_minutes=30, agent_token_limit=2_000_000, agent_message_limit=None, bash_timeout=360,
     assistant_name="DeepSeek",
 )
@@ -86,6 +91,8 @@ def multi_task_args(**cfg) -> dict:
         grader_warning=c["grader_warning"], grader_conflict=c["grader_conflict"], contact=c["contact"],
         shared_submission=c["shared_submission"], receivers_score_tool=c["receivers_score_tool"],
         direct_messages=c["direct_messages"], dm_user=c["dm_user"],
+        dm_menu=c["dm_menu"], dm_report=c["dm_report"],
+        team_server=c["team_server"],
     )
 
 
@@ -107,6 +114,9 @@ def redwood_titanic_experiment(
     receivers_score_tool: bool = True,
     direct_messages: bool = False,
     dm_user: bool = False,
+    dm_menu: bool = False,
+    dm_report: bool = False,
+    team_server: bool = False,
     episode_minutes: int = 30,
     agent_token_limit: int = 2_000_000,
     agent_message_limit: int | None = None,

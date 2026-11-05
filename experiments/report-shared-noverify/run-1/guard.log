@@ -1,0 +1,33 @@
+11:30:26 start run_experiment.sh shared-submission+direct-messages+report-problem/no-verify (cap $1.00, meter $7.709769582, remaining $7.290230418)
+11:31:26 spent $0.008
+11:32:27 spent $0.0359
+11:33:27 spent $0.0699
+11:34:27 spent $0.1128
+11:35:28 spent $0.1495
+11:36:28 spent $0.2071
+11:37:28 spent $0.2641
+11:38:29 spent $0.317
+11:39:29 spent $0.3675
+11:40:29 spent $0.3838
+11:41:29 spent $0.3925
+11:42:29 spent $0.4001
+11:43:30 spent $0.4121
+11:44:30 spent $0.4274
+11:45:30 spent $0.4309
+11:46:31 spent $0.4407
+11:47:31 spent $0.4407
+11:48:31 spent $0.4448
+11:49:32 spent $0.4448
+11:50:32 spent $0.4448
+11:51:32 spent $0.4453
+11:52:33 spent $0.4453
+11:53:33 spent $0.4552
+11:54:33 spent $0.4558
+11:55:34 spent $0.4558
+11:56:34 spent $0.466
+11:57:35 spent $0.4767
+11:58:35 spent $0.4822
+11:59:35 spent $0.4997
+12:00:35 spent $0.5292
+done: experiments/shared-submission+direct-messages+report-problem/no-verify/run-1/report.md (inspect exit 0)
+12:00:43 finished shared-submission+direct-messages+report-problem/no-verify (runner exit 0): meter delta $0.5406, remaining $6.749605867
