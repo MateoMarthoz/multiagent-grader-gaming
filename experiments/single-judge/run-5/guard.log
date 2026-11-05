@@ -1,0 +1,13 @@
+12:34:16 key has no spending limit: skipping the floor check (the $0.60 cap still applies)
+12:34:16 start run_single_experiment.sh single-judge (cap $0.60, meter $2620.036577407, remaining $None)
+12:35:16 spent $0.005
+12:36:17 spent $0.0249
+12:37:17 spent $0.0388
+12:38:18 spent $0.0618
+12:39:18 spent $0.0886
+12:40:18 spent $0.1018
+12:41:19 spent $0.1261
+12:42:19 spent $0.1536
+12:43:19 spent $0.1844
+done: experiments/single-judge/run-5/report.md (inspect exit 0)
+12:43:59 finished single-judge (runner exit 0): meter delta $0.1889, remaining $None
