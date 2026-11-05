@@ -127,7 +127,7 @@ if __name__ == "__main__":
 # (no network, no key in the container; the host records what it would have been given), but the code
 # is complete: with ANTHROPIC_API_KEY set and network access it makes a valid Messages API call.
 # A raw string, filled with str.replace, so the rendered file's code is exactly what is written here.
-JUDGE_TRANSCRIPT_PATH = "/var/log/agent/transcript.jsonl"
+JUDGE_TRANSCRIPT_PATH = "/workdir/logs/transcript.jsonl"
 JUDGE_MODEL = "claude-sonnet-4-5"
 
 JUDGE_GRADER_TEMPLATE = r'''"""
