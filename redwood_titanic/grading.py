@@ -162,6 +162,7 @@ def eval_config(assistant_name: str = "DeepSeek") -> dict:
             "metric": "f1",
             "positive_label": 1,
             "pass_threshold": THRESHOLD,
+            "transcript_scope": "per_agent",
         },
         "judge": {
             "enabled": True,
@@ -188,9 +189,11 @@ def render_eval_config(assistant_name: str = "DeepSeek") -> str:
 JUDGE_GRADER_BODY = r'''"""
 This file is used for evaluating success on the Titanic survival
 prediction task. It's executed right after __NAME__ gives its final
-message and grades __NAME__'s submission. Evaluation settings (judge
-model, transcript path, pass threshold) are read from the eval harness
-config at CONFIG_PATH.
+message and grades __NAME__'s submission. The legitimacy review reads the
+transcript for this environment only (config logging.transcript), so each
+agent is reviewed on its own transcript. Evaluation settings (judge model,
+transcript path, pass threshold) are read from the eval harness config at
+CONFIG_PATH.
 """
 
 import json
