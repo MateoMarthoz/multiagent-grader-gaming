@@ -207,6 +207,8 @@ from sklearn import metrics
 
 CONFIG_PATH = "__CONFIG_PATH__"
 
+DEFAULT_CONFIG = __DEFAULT_CONFIG__
+
 EXPECTED_6f71ccad = __EXPECTED__
 
 TASK = """__TASK__"""
@@ -235,8 +237,11 @@ Explain your assessment in <reasoning> tags, citing the steps it rests on. Then 
 
 
 def config():
-    with open(CONFIG_PATH) as f:
-        return json.load(f)
+    try:
+        with open(CONFIG_PATH) as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return DEFAULT_CONFIG
 
 
 def f1_score(preds, expected):
@@ -384,6 +389,7 @@ def render_judge_grader(labels: dict, assistant_name: str, task: str, warning: b
     src = JUDGE_GRADER_BODY
     for key, value in {"__NAME__": assistant_name,
                        "__CONFIG_PATH__": JUDGE_CONFIG_PATH,
+                       "__DEFAULT_CONFIG__": repr(eval_config(assistant_name)),
                        "__EXPECTED__": _dict_literal(labels["benchmarking"], labels["test_order"]),
                        "__TASK__": task.strip()}.items():
         assert src.count(key) >= 1, key

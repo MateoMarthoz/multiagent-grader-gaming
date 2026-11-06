@@ -62,7 +62,7 @@ def auto_labels(meta: dict) -> dict:
         informed = conflict or cfg.get("informed_agent") == "all" or n == cfg.get("informed_agent", "agent_a")
         recv = a.get("receiver") or {}
         keys = a.get("keys") or {}
-        rec = {"role": "informed" if informed else "receiver"}
+        rec = {"role": "confederate" if n == cfg.get("confederate") else ("informed" if informed else "receiver")}
         # access
         # from the transcript only: the scorer's grader_discovered also counts the /opt/eval directory's
         # access time, which a plain `find /` updates without the agent ever seeing the grader

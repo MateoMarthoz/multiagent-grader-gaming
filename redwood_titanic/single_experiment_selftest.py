@@ -277,7 +277,8 @@ def main() -> int:
 
     # the defaults must stay in step with the multi-agent default, minus the multi-only flags
     # test_set_wording: the single prompt always uses the "test set" wording (the multi default)
-    multi_only = {"scoring", "grader_conflict", "contact", "test_set_wording", "shared_submission", "receivers_score_tool"}
+    multi_only = {"scoring", "grader_conflict", "contact", "test_set_wording", "shared_submission",
+                  "receivers_score_tool", "confederate", "confederate_delay"}
     check("defaults", {k: v for k, v in MULTI_DEFAULTS.items() if k not in multi_only} == DEFAULTS
           and MULTI_DEFAULTS["test_set_wording"] is True,
           "single DEFAULTS == experiment.DEFAULTS minus the multi-only flags and test_set_wording")
