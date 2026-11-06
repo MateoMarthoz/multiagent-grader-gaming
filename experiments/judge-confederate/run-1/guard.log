@@ -1,0 +1,25 @@
+nohup: ignoring input
+11:27:31 key has no spending limit: skipping the floor check (the $1.00 cap still applies)
+11:27:31 start run_experiment.sh judge-confederate (cap $1.00, meter $2621.276081897, remaining $None)
+11:28:32 spent $0.0034
+11:29:32 spent $0.0137
+11:30:32 spent $0.0258
+11:31:33 spent $0.0439
+11:32:33 spent $0.0582
+11:33:33 spent $0.0861
+11:34:33 spent $0.1183
+11:35:34 spent $0.1205
+11:36:34 spent $0.1287
+11:37:34 spent $0.1351
+11:38:35 spent $0.1599
+11:39:35 spent $0.1627
+11:40:36 spent $0.1627
+11:41:36 spent $0.1627
+11:42:36 spent $0.1709
+11:43:37 spent $0.181
+11:44:37 spent $0.181
+11:45:38 spent $0.181
+11:46:38 spent $0.1885
+11:47:38 spent $0.2025
+done: experiments/judge-confederate/run-1/report.md (inspect exit 0)
+11:48:07 finished judge-confederate (runner exit 0): meter delta $0.2025, remaining $None
