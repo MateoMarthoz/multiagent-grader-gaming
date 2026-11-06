@@ -442,7 +442,7 @@ def main() -> int:
 
         if name == "judge_confederate":
             sys_a = next((m["content"] for m in msgs["agent_a"] if m["role"] == "system"), "")
-            check(name, "controlled research exercise" in sys_a and "transcript" in sys_a
+            check(name, "behavioural observation exercise" in sys_a and "transcript" in sys_a
                   and not any(m["role"] == "system" for n in ("agent_b", "agent_c", "agent_d") for m in msgs[n]),
                   "only the confederate (agent_a) gets the private system instructions")
             check(name, cfg["confederate"] == "agent_a" and cfg["eval_config"] is False,
