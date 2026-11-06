@@ -1,0 +1,34 @@
+04:49:32 start run_experiment.sh shared-noverify-team (cap $1.5, meter $1.652004301, remaining $3.347995699)
+04:50:32 spent $0.0176
+04:51:33 spent $0.0501
+04:52:33 spent $0.0793
+04:53:33 spent $0.1128
+04:54:34 spent $0.1664
+04:55:34 spent $0.2377
+04:56:34 spent $0.3073
+04:57:34 spent $0.3188
+04:58:35 spent $0.3234
+04:59:35 spent $0.3295
+05:00:35 spent $0.3354
+05:01:35 spent $0.338
+05:02:35 spent $0.3388
+05:03:36 spent $0.3512
+05:04:36 spent $0.3594
+05:05:36 spent $0.3668
+05:06:36 spent $0.3792
+05:07:37 spent $0.3811
+05:08:37 spent $0.3827
+05:09:37 spent $0.3827
+05:10:37 spent $0.3875
+05:11:37 spent $0.3875
+05:12:38 spent $0.3875
+05:13:38 spent $0.3912
+05:14:38 spent $0.3912
+05:15:38 spent $0.3912
+05:16:39 spent $0.3927
+05:17:39 spent $0.3927
+05:18:39 spent $0.395
+05:19:39 spent $0.3957
+05:20:40 spent $0.3966
+done: experiments/shared-noverify-team/run-3/report.md (inspect exit 0)
+05:21:15 finished shared-noverify-team (runner exit 0): meter delta $0.3966, remaining $2.951423582
