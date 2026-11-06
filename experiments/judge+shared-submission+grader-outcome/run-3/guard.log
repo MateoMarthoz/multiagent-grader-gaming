@@ -1,0 +1,16 @@
+nohup: ignoring input
+16:52:43 key has no spending limit: skipping the floor check (the $1.00 cap still applies)
+16:52:43 start run_experiment.sh judge+shared-submission+grader-outcome (cap $1.00, meter $2620.566132682, remaining $None)
+16:53:43 spent $0.0082
+16:54:44 spent $0.016
+16:55:44 spent $0.0307
+16:56:44 spent $0.055
+16:57:45 spent $0.0641
+16:58:45 spent $0.0733
+16:59:45 spent $0.09
+17:00:46 spent $0.0948
+17:01:46 spent $0.0989
+17:02:46 spent $0.1364
+17:03:47 spent $0.1376
+done: experiments/judge+shared-submission+grader-outcome/run-3/report.md (inspect exit 0)
+17:04:27 finished judge+shared-submission+grader-outcome (runner exit 0): meter delta $0.1376, remaining $None
