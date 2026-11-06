@@ -1,0 +1,5 @@
+21:35:53 start run_experiment.sh shared-escalate-rule (cap $1.50, meter $10.384376971, remaining $4.615623029)
+21:36:53 spent $0.0048
+21:37:53 spent $0.0345
+21:38:53 spent $0.0791
+21:39:54 spent $0.1124

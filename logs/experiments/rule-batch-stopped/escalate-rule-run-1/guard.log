@@ -1,0 +1,4 @@
+21:36:07 start run_experiment.sh escalate-rule (cap $1.50, meter $10.384376971, remaining $4.615623029)
+21:37:08 spent $0.0107
+21:38:08 spent $0.0484
+21:39:08 spent $0.0916

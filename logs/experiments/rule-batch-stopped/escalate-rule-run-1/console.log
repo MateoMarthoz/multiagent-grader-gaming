@@ -1,0 +1,12 @@
+Monitor from another shell: inspect ctl task list   (inspect ctl --help)
+time="2026-11-05T21:36:13Z" level=warning msg="No services to build"
+
+Running 1 tasks...
+---------------------------------------------------------                       
+redwood_titanic_experiment (1 sample):                                          
+openrouter/deepseek/deepseek-v4-flash-0731                                      
+fail_on_error: False, token_limit: 8000000, time_limit: 1800, max_samples: 1,   
+log_model_api: True, escalate: True, receivers_rule: True, grader_mention: True,
+dataset: (samples)                                                              
+---------------------------------------------------------                       
+                                                                                

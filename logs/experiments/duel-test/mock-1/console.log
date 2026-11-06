@@ -1,0 +1,31 @@
+Monitor from another shell: inspect ctl task list   (inspect ctl --help)
+time="2026-11-05T17:14:46Z" level=warning msg="No services to build"
+
+Running 1 tasks...
+---------------------------------------------------------                       
+redwood_titanic_duel (1 sample): mockllm/model                                  
+fail_on_error: False, token_limit: 3500000, time_limit: 120, max_samples: 1,    
+log_model_api: True, other: human, episode_minutes: 2, pause_min: 2, pause_max: 
+4, dataset: (samples)                                                           
+---------------------------------------------------------                       
+                                                                                
+duel_loop    | Steps:   1/1 100% | Samples:   0/  1 | mean:  n/a | mockllm:  0/20, docker:  0/16, subprocesses:  0/ 8 | HTTP retries: 0
+
+---------------------------------------------------------                       
+redwood_titanic_duel (1 sample): mockllm/model                                  
+fail_on_error: False, token_limit: 3500000, time_limit: 120, max_samples: 1,    
+log_model_api: True, other: human, episode_minutes: 2, pause_min: 2, pause_max: 
+4, dataset: (samples)                                                           
+                                                                                
+total time:            0:02:15                                                  
+mockllm/model          83,506 tokens [I: 82,285, O: 1,221]                      
+confederate (role)           82,472 tokens [I: 81,284, O: 1,188]                
+subject_sc…         other_score         n_submits_…         n_submits_ot…       
+mean         0.000  mean         0.000  mean         0.000  mean           0.000
+n_posts_subject         n_posts_other         confederate_rule_a_flags          
+mean             0.000  mean           0.000  mean                      0.000   
+Log:                                                                            
+logs/experiments/duel-test/mock-1/2026-11-05T17-14-46-00-00_redwood-titanic-due…
+---------------------------------------------------------                       
+                                                                                
+inspect exit: 0

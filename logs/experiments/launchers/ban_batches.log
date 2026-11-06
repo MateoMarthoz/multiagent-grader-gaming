@@ -1,0 +1,13 @@
+12:06:14 batch 1: main $0.42330183700000035, second $1.6516723190000002
+  shared-noverify-team-ban run-1 on main (cap $0.4); shared-noverify-team-ban-activity run-1 on second (cap $0.45)
+12:38:24 BATCH 1 DONE
+12:38:25 batch 2: main $0.31365845000000014, second $1.4002214949999998
+  shared-noverify-team-ban run-2 on main (cap $0.3); shared-noverify-team-ban-activity run-2 on second (cap $0.45)
+13:10:40 BATCH 2 DONE
+13:10:40 batch 3: main $0.1623586219999993, second $1.2345555400000001
+  shared-noverify-team-ban run-3 on second (cap $0.75); shared-noverify-team-ban-activity run-3 on second (cap $0.75)
+13:42:35 BATCH 3 DONE
+13:42:35 batch 4: main $0.1623586219999993, second $0.8742452209999998
+  shared-noverify-team-ban run-4 on second (cap $0.75); shared-noverify-team-ban-activity run-4 on second (cap $0.75)
+14:14:37 BATCH 4 DONE
+ALL DONE 14:14:37

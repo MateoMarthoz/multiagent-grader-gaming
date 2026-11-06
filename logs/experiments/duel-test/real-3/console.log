@@ -1,0 +1,33 @@
+Monitor from another shell: inspect ctl task list   (inspect ctl --help)
+time="2026-11-05T17:28:44Z" level=warning msg="No services to build"
+
+Running 1 tasks...
+---------------------------------------------------------                       
+redwood_titanic_duel (1 sample): openrouter/deepseek/deepseek-v4-flash-0731     
+fail_on_error: False, token_limit: 3500000, time_limit: 300, max_samples: 1,    
+log_model_api: True, other: human, episode_minutes: 5, pause_min: 12, pause_max:
+20, dataset: (samples)                                                          
+---------------------------------------------------------                       
+                                                                                
+duel_loop    | Steps:   1/1 100% | Samples:   0/  1 | mean:  n/a | openrouter:  0/20, docker:  0/16, subprocesses:  0/ 8 | HTTP retries: 0
+
+---------------------------------------------------------                       
+redwood_titanic_duel (1 sample): openrouter/deepseek/deepseek-v4-flash-0731     
+fail_on_error: False, token_limit: 3500000, time_limit: 300, max_samples: 1,    
+log_model_api: True, other: human, episode_minutes: 5, pause_min: 12, pause_max:
+20, dataset: (samples)                                                          
+                                                                                
+total time:                               0:05:08                               
+openrouter/deepseek/deepseek-v4-flash-0…  266,222 tokens [I: 37,351, CW: 0, CR: 
+                                        213,504, O: 15,367, R: 10,089]          
+confederate (role)  82,446 tokens [I: 16,513, CW: 0, CR: 59,136, O: 6,797, R:   
+                  5,019]                                                        
+subject_sc…         other_score         n_submits_…         n_submits_ot…       
+mean         0.000  mean         1.000  mean         3.000  mean           1.000
+n_posts_subject         n_posts_other         confederate_rule_a_flags          
+mean             3.000  mean           3.000  mean                      1.000   
+Log:                                                                            
+logs/experiments/duel-test/real-3/2026-11-05T17-28-44-00-00_redwood-titanic-due…
+---------------------------------------------------------                       
+                                                                                
+inspect exit: 0

@@ -1,0 +1,1 @@
+These ran with NO -T flags (zsh passed $F as one word and Inspect dropped it), so they are default-condition runs, not conflict-team. Moved out 2026-11-05.

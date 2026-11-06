@@ -1,0 +1,71 @@
+Traceback (most recent call last):
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/util.py", line 219, in resolve_role_value
+    config = GenerateConfig(**params)
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/pydantic/main.py", line 280, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for GenerateConfig
+  Value error, Unknown GenerateConfig field(s): provider. Use extra_body for provider-specific options. [type=value_error, input_value={'provider': {'order': ['...llow_fallbacks': False}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.14/v/value_error
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/ARENA_materials/.venv/bin/inspect", line 10, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/main.py", line 62, in main
+    inspect(auto_envvar_prefix="INSPECT")  # pylint: disable=no-value-for-parameter
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/click/core.py", line 1631, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/click/core.py", line 1552, in main
+    rv = self.invoke(ctx)
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/click/core.py", line 2032, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/click/core.py", line 1415, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/click/core.py", line 910, in invoke
+    return callback(*args, **kwargs)
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/eval.py", line 277, in wrapper
+    return cast(click.Context, func(*args, **kwargs))
+                               ~~~~^^^^^^^^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/common.py", line 45, in wrapper
+    return cast(click.Context, func(*args, **kwargs))
+                               ~~~~^^^^^^^^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/common.py", line 110, in wrapper
+    return cast(click.Context, func(*args, **kwargs))
+                               ~~~~^^^^^^^^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/eval.py", line 1001, in wrapper
+    return cast(click.Context, func(*args, **kwargs))
+                               ~~~~^^^^^^^^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/click/decorators.py", line 34, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/eval.py", line 1079, in eval_command
+    _eval_command_impl(**params)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/eval.py", line 1266, in _eval_command_impl
+    eval_exec(
+    ~~~~~~~~~^
+        tasks=tasks,
+        ^^^^^^^^^^^^
+    ...<78 lines>...
+        **config,
+        ^^^^^^^^^
+    )
+    ^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/eval.py", line 2106, in eval_exec
+    eval_model_roles = parse_model_role_cli_args(model_role)
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/util.py", line 244, in parse_model_role_cli_args
+    resolved_args[role_name] = resolve_role_value(role_name, params)
+                               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/root/ARENA_materials/.venv/lib/python3.13/site-packages/inspect_ai/_cli/util.py", line 221, in resolve_role_value
+    raise ValueError(
+        f"Invalid config for model role '{role_name}': {e}"
+    ) from e
+ValueError: Invalid config for model role 'confederate': 1 validation error for GenerateConfig
+  Value error, Unknown GenerateConfig field(s): provider. Use extra_body for provider-specific options. [type=value_error, input_value={'provider': {'order': ['...llow_fallbacks': False}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.14/v/value_error
+inspect exit: 1

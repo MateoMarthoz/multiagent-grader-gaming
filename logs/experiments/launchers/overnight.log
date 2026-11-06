@@ -1,0 +1,39 @@
+02:26:16 key main ($2.9357260600000004 left): starting 3 run(s), cap $1.5
+  shared-report-agent run-2 -T shared_submission=true -T report_agent=true
+  report-agent run-2 -T report_agent=true
+  competitive-report-agent run-2 -T scoring=competitive -T report_agent=true
+02:58:05 group done (3/21)
+02:58:06 key main ($2.4272293870000006 left): starting 3 run(s), cap $1.5
+  shared-report-agent-activity run-2 -T shared_submission=true -T report_agent=true -T activity_view=true
+  report-agent-activity run-2 -T report_agent=true -T activity_view=true
+  competitive-report-agent-activity run-2 -T scoring=competitive -T report_agent=true -T activity_view=true
+03:30:07 group done (6/21)
+03:30:07 key main ($1.7703999320000001 left): starting 3 run(s), cap $1.5
+  shared-noverify-team run-2 -T shared_submission=true -T receivers_score_tool=false -T team_server=true
+  shared-report-agent run-3 -T shared_submission=true -T report_agent=true
+  report-agent run-3 -T report_agent=true
+04:02:19 group done (9/21)
+04:02:20 key main ($1.2859518849999994 left): starting 2 run(s), cap $1.0
+  competitive-report-agent run-3 -T scoring=competitive -T report_agent=true
+  shared-report-agent-activity run-3 -T shared_submission=true -T report_agent=true -T activity_view=true
+04:33:39 group done (11/21)
+04:33:39 key main ($0.7579265520000007 left): starting 1 run(s), cap $0.5
+  report-agent-activity run-3 -T report_agent=true -T activity_view=true
+04:49:16 group done (12/21)
+04:49:17 key main has $0.5311978499999999 left: not enough for a run
+04:49:17 key second ($3.347995699 left): starting 3 run(s), cap $1.5
+  competitive-report-agent-activity run-3 -T scoring=competitive -T report_agent=true -T activity_view=true
+  shared-noverify-team run-3 -T shared_submission=true -T receivers_score_tool=false -T team_server=true
+  shared-report-agent run-4 -T shared_submission=true -T report_agent=true
+05:21:15 group done (15/21)
+05:21:15 key second ($2.951423582 left): starting 3 run(s), cap $1.5
+  report-agent run-4 -T report_agent=true
+  competitive-report-agent run-4 -T scoring=competitive -T report_agent=true
+  shared-report-agent-activity run-4 -T shared_submission=true -T report_agent=true -T activity_view=true
+05:52:28 group done (18/21)
+05:52:28 key second ($2.320768946 left): starting 3 run(s), cap $1.5
+  report-agent-activity run-4 -T report_agent=true -T activity_view=true
+  competitive-report-agent-activity run-4 -T scoring=competitive -T report_agent=true -T activity_view=true
+  shared-noverify-team run-4 -T shared_submission=true -T receivers_score_tool=false -T team_server=true
+06:22:53 group done (21/21)
+ALL DONE 06:22:53
