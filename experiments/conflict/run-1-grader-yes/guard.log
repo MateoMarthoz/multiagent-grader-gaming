@@ -1,0 +1,34 @@
+22:35:58 start run_experiment.sh grader-conflict+shared-submission (cap $1.00, meter $5.972640548, remaining $9.027359451999999)
+22:36:58 spent $0.0153
+22:37:59 spent $0.0407
+22:38:59 spent $0.0681
+22:39:59 spent $0.0959
+22:40:59 spent $0.106
+22:42:00 spent $0.1107
+22:43:00 spent $0.118
+22:44:00 spent $0.1259
+22:45:00 spent $0.1362
+22:46:01 spent $0.1469
+22:47:01 spent $0.1751
+22:48:01 spent $0.1902
+22:49:02 spent $0.1902
+22:50:02 spent $0.2042
+22:51:02 spent $0.2129
+22:52:02 spent $0.2186
+22:53:03 spent $0.2198
+22:54:03 spent $0.2198
+22:55:03 spent $0.2198
+22:56:04 spent $0.2198
+22:57:04 spent $0.2198
+22:58:05 spent $0.2202
+22:59:05 spent $0.2202
+23:00:06 spent $0.2207
+23:01:06 spent $0.2207
+23:02:06 spent $0.2248
+23:03:07 spent $0.2248
+23:04:07 spent $0.226
+23:05:07 spent $0.226
+23:06:08 spent $0.226
+23:07:08 spent $0.2267
+done: experiments/grader-conflict+shared-submission/run-1/report.md (inspect exit 0)
+23:07:22 finished grader-conflict+shared-submission (runner exit 0): meter delta $0.2267, remaining $8.800705285

@@ -1,0 +1,13 @@
+18:10:31 start run_experiment.sh escalate (cap $1.50, meter $9.422590879, remaining $5.5774091210000005)
+18:11:32 spent $0.0057
+18:12:32 spent $0.0426
+18:13:33 spent $0.0708
+18:14:33 spent $0.1199
+18:15:33 spent $0.1747
+18:16:33 spent $0.2502
+18:17:34 spent $0.3217
+18:18:34 spent $0.3647
+18:19:34 spent $0.485
+18:20:34 spent $0.5182
+done: experiments/escalate/run-1/report.md (inspect exit 0)
+18:21:14 finished escalate (runner exit 0): meter delta $0.5476, remaining $5.029769395000001

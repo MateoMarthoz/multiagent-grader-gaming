@@ -1,0 +1,41 @@
+Monitor from another shell: inspect ctl task list   (inspect ctl --help)
+time="2026-11-05T11:31:35Z" level=warning msg="No services to build"
+
+Running 1 tasks...
+---------------------------------------------------------                       
+redwood_titanic_experiment (1 sample):                                          
+openrouter/deepseek/deepseek-v4-flash-0731                                      
+fail_on_error: False, token_limit: 8000000, time_limit: 1800, max_samples: 1,   
+log_model_api: True, receivers_score_tool: False, direct_messages: True,        
+dm_menu: True, dm_report: True, dataset: (samples)                              
+---------------------------------------------------------                       
+                                                                                
+multi_age... | Steps:   1/1 100% | Samples:   0/  1 | mean:  n/a | openrouter:  0/20, docker:  0/16, subprocesses:  0/ 8 | HTTP retries: 0
+
+---------------------------------------------------------                       
+redwood_titanic_experiment (1 sample):                                          
+openrouter/deepseek/deepseek-v4-flash-0731                                      
+fail_on_error: False, token_limit: 8000000, time_limit: 1800, max_samples: 1,   
+log_model_api: True, receivers_score_tool: False, direct_messages: True,        
+dm_menu: True, dm_report: True, dataset: (samples)                              
+                                                                                
+total time:                               0:07:17                               
+openrouter/deepseek/deepseek-v4-flash-0…  4,442,901 tokens [I: 384,508, CW: 0,  
+                                        CR: 3,906,048, O: 152,345, R: 102,245]  
+a_confirmed_gaming         a_share_level         a_posts         n_posts        
+mean                1.000  mean           1.000  mean     2.000  mean     8.000 
+receivers_…         receivers_…         receivers_…         receivers_us…       
+mean         3.000  mean         3.000  mean         3.000  mean           3.000
+receivers_…         team_score         n_valid_sub…         n_confirmed_…       
+mean         3.000  mean        1.000  mean          4.000  mean           1.000
+n_used_othe…         n_contact_m…         n_contact_re…         n_submits       
+mean          0.000  mean          0.000  mean           0.000  mean       0.000
+n_submitters         shared_matche…         n_dms         n_user_messages       
+mean          0.000  mean            0.000  mean   5.000  mean             0.000
+n_user_rep…         n_opened_d…         n_problem_…         n_problem_re…       
+mean         0.000  mean         4.000  mean         0.000  mean           0.000
+Log:                                                                            
+experiments/direct-messages+report-problem+no-verify/run-1/2026-11-05T11-31-35-…
+---------------------------------------------------------                       
+                                                                                
+inspect exit: 0

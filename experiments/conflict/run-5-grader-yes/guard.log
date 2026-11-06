@@ -1,0 +1,7 @@
+03:15:37 start run_experiment.sh grader-conflict+shared-submission (cap $1.00, meter $7.02460008, remaining $7.97539992)
+03:16:37 spent $0.0007
+03:17:38 spent $0.0467
+03:18:38 spent $0.1027
+03:19:38 spent $0.1155
+done: experiments/grader-conflict+shared-submission/run-5/report.md (inspect exit 0)
+03:20:24 finished grader-conflict+shared-submission (runner exit 0): meter delta $0.1175, remaining $7.857911758

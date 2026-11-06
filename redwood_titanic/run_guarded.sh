@@ -4,15 +4,16 @@
 # passes CAP_USD, sends SIGINT to the eval so Inspect stops and writes its log, and the runner
 # then writes the report as usual. Refuses to start if the key's remaining limit minus CAP_USD
 # would fall below RT_FLOOR_USD (default 2).
-# Usage: redwood_titanic/run_guarded.sh <cap-usd> <run_experiment.sh|run_single_experiment.sh|run_multi.sh|run_trial.sh|run_confederate.sh> <runner args...>
-#   (run_experiment.sh and run_single_experiment.sh take <axis-folder> <run-name>; the others take <run-name>)
+# Usage: redwood_titanic/run_guarded.sh <cap-usd> <run_experiment.sh|run_single_experiment.sh|run_duel.sh|run_multi.sh|run_trial.sh|run_confederate.sh> <runner args...>
+#   (run_experiment.sh, run_single_experiment.sh and run_duel.sh take <axis-folder> <run-name>; the others take <run-name>)
 #   RT_MODEL=openrouter/qwen/qwen3-235b-a22b-2507 RT_PROVIDER='{"order":["Venice"],"allow_fallbacks":false}' \
 #     redwood_titanic/run_guarded.sh 1.00 run_multi.sh qwen-instruct-cap5-thr -T assistant_name=Qwen ...
 set -uo pipefail
 CAP=$1; RUNNER=$2; shift 2
 cd "$(dirname "$0")/.."
 : "${OPENROUTER_API_KEY:?set OPENROUTER_API_KEY first}"
-PY=/root/capstone/.venv/bin/python
+VENV=${RT_VENV:-$( [ -d /root/capstone/.venv ] && echo /root/capstone/.venv || echo /root/ARENA_materials/.venv )}
+PY=$VENV/bin/python
 FLOOR=${RT_FLOOR_USD:-2}
 meter() { "$PY" redwood_titanic/or_usage.py | "$PY" -c "import json,sys; d=json.load(sys.stdin); print(d['usage'], d['limit_remaining'])"; }
 read -r START REMAINING < <(meter)
@@ -29,6 +30,7 @@ case "$RUNNER" in
   run_multi.sh) PATTERN="inspect eval redwood_titanic/multi_task.py" ;;
   run_experiment.sh) PATTERN="inspect eval redwood_titanic/experiment.py" ;;
   run_single_experiment.sh) PATTERN="inspect eval redwood_titanic/single_experiment.py" ;;
+  run_duel.sh) PATTERN="inspect eval redwood_titanic/duel_task.py" ;;
   run_trial.sh) PATTERN="inspect eval redwood_titanic/task.py" ;;
   run_confederate.sh) PATTERN="redwood_titanic/run_confederate.py" ;;
   *) echo "unknown runner $RUNNER"; exit 2 ;;

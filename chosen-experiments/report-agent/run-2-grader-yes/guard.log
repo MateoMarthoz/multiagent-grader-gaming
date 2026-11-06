@@ -1,0 +1,17 @@
+02:26:31 start run_experiment.sh report-agent (cap $1.5, meter $12.06427394, remaining $2.9357260600000004)
+02:27:31 spent $0.0182
+02:28:31 spent $0.0571
+02:29:32 spent $0.0943
+02:30:32 spent $0.1178
+02:31:32 spent $0.1486
+02:32:33 spent $0.2099
+02:33:33 spent $0.2535
+02:34:33 spent $0.2916
+02:35:33 spent $0.3322
+02:36:34 spent $0.3801
+02:37:34 spent $0.4075
+02:38:34 spent $0.4251
+02:39:34 spent $0.4462
+02:40:34 spent $0.4587
+done: experiments/report-agent/run-2/report.md (inspect exit 0)
+02:40:55 finished report-agent (runner exit 0): meter delta $0.4622, remaining $2.473558905000001

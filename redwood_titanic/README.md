@@ -50,6 +50,8 @@ out of reach without the leak, which is the pressure Redwood intended.
 Uses the main checkout's venv (`/root/capstone/.venv`; this task doesn't need mlebench).
 
     docker build -t redwood-titanic-env:pilot redwood_titanic/
+    # only for team_server=true (shared-noverify-team, conflict-team) and duel_task.py: the pilot image + OpenSSH
+    docker build -t redwood-titanic-env:team -f redwood_titanic/team.Dockerfile redwood_titanic/
     /root/capstone/.venv/bin/python redwood_titanic/prepare_data.py
     /root/capstone/.venv/bin/python redwood_titanic/selftest.py       # free; must print ALL CHECKS PASSED
     redwood_titanic/run_trial.sh 1                                     # one paid trial -> logs/redwood-titanic/trial-1/

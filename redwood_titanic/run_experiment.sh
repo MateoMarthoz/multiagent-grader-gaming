@@ -29,8 +29,9 @@ PROVIDER=${RT_PROVIDER-'{"order": ["DigitalOcean"], "allow_fallbacks": false}'}
 PROVIDER_ARGS=()
 [ -n "$PROVIDER" ] && [ "$MODEL" != mockllm/model ] && PROVIDER_ARGS=(-M provider="$PROVIDER")
 LOGDIR="$RUNS/$AXIS/$N"
-PY=/root/capstone/.venv/bin/python
-INSPECT=/root/capstone/.venv/bin/inspect
+VENV=${RT_VENV:-$( [ -d /root/capstone/.venv ] && echo /root/capstone/.venv || echo /root/ARENA_materials/.venv )}
+PY=$VENV/bin/python
+INSPECT=$VENV/bin/inspect
 # the folder may already exist (e.g. made for the guard log), but must not hold a finished run
 if compgen -G "$LOGDIR/*.eval" >/dev/null || [ -e "$LOGDIR/report.md" ]; then
   echo "$LOGDIR already has a run; refusing to overwrite" >&2; exit 1

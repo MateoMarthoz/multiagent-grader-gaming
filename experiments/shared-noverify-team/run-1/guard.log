@@ -1,0 +1,34 @@
+13:16:30 start run_experiment.sh team-server (cap $0.60, meter $0.070925765, remaining $4.929074235)
+13:17:30 spent $0.0039
+13:18:31 spent $0.0167
+13:19:31 spent $0.0219
+13:20:31 spent $0.0362
+13:21:32 spent $0.0441
+13:22:32 spent $0.0617
+13:23:32 spent $0.0746
+13:24:32 spent $0.0893
+13:25:33 spent $0.0939
+13:26:33 spent $0.1022
+13:27:33 spent $0.1119
+13:28:35 spent $0.1206
+13:29:35 spent $0.1206
+13:30:35 spent $0.1251
+13:31:35 spent $0.15
+13:32:36 spent $0.1753
+13:33:36 spent $0.1851
+13:34:36 spent $0.1909
+13:35:36 spent $0.1946
+13:36:37 spent $0.1957
+13:37:37 spent $0.1973
+13:38:37 spent $0.1973
+13:39:38 spent $0.2003
+13:40:38 spent $0.2021
+13:41:38 spent $0.2039
+13:42:38 spent $0.205
+13:43:39 spent $0.2069
+13:44:39 spent $0.2069
+13:45:39 spent $0.2144
+13:46:40 spent $0.2181
+13:47:40 spent $0.2233
+done: experiments/team-server/run-1/report.md (inspect exit 0)
+13:48:07 finished team-server (runner exit 0): meter delta $0.2233, remaining $4.705809343

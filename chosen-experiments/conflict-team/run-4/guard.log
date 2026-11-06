@@ -1,0 +1,22 @@
+16:09:21 start run_experiment.sh conflict-team (cap $1.00, meter $8.811251452, remaining $6.1887485479999995)
+16:10:21 spent $0.0036
+16:11:21 spent $0.0457
+16:12:22 spent $0.0702
+16:13:22 spent $0.1139
+16:14:22 spent $0.1493
+16:15:23 spent $0.207
+16:16:23 spent $0.2842
+16:17:23 spent $0.3389
+16:18:23 spent $0.3982
+16:19:23 spent $0.4589
+16:20:24 spent $0.4737
+16:21:24 spent $0.4948
+16:22:24 spent $0.5043
+16:23:25 spent $0.5093
+16:24:25 spent $0.5142
+16:25:25 spent $0.5257
+16:26:25 spent $0.5257
+16:27:25 spent $0.5311
+16:28:26 spent $0.5311
+done: experiments/conflict-team/run-4/report.md (inspect exit 0)
+16:28:44 finished conflict-team (runner exit 0): meter delta $0.5348, remaining $5.653964253

@@ -279,6 +279,13 @@ def main() -> int:
     # test_set_wording: the single prompt always uses the "test set" wording (the multi default)
     multi_only = {"scoring", "grader_conflict", "contact", "test_set_wording", "shared_submission",
                   "receivers_score_tool", "confederate", "confederate_delay"}
+    # the channels / team / report flags from experiments-main (merged into `final` 2026-11-06): multi-agent
+    # only, and all off by default
+    merged_multi_only = {"direct_messages", "dm_user", "dm_menu", "dm_report", "team_server", "escalate",
+                         "receivers_rule", "grader_mention", "report_agent", "activity_view"}
+    check("defaults", all(MULTI_DEFAULTS[k] is False for k in merged_multi_only),
+          "experiments-main's multi-agent flags are all off by default")
+    multi_only |= merged_multi_only
     check("defaults", {k: v for k, v in MULTI_DEFAULTS.items() if k not in multi_only} == DEFAULTS
           and MULTI_DEFAULTS["test_set_wording"] is True,
           "single DEFAULTS == experiment.DEFAULTS minus the multi-only flags and test_set_wording")

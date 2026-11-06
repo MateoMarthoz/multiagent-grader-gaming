@@ -1,0 +1,10 @@
+02:11:05 start run_experiment.sh direct-messages+report-problem (cap $1.00, meter $6.57898621, remaining $8.42101379)
+02:12:05 spent $0.0067
+02:13:06 spent $0.0494
+02:14:06 spent $0.1096
+02:15:06 spent $0.1486
+02:16:06 spent $0.1573
+02:17:06 spent $0.1978
+02:18:07 spent $0.1978
+done: experiments/direct-messages+report-problem/run-2/report.md (inspect exit 0)
+02:18:37 finished direct-messages+report-problem (runner exit 0): meter delta $0.207, remaining $8.213999788999999
